@@ -1,0 +1,55 @@
+/*--------------------------------------------------------------
+# Pagination 2 Section
+--------------------------------------------------------------*/
+.pagination-2 {
+  padding-top: 0;
+  color: color-mix(in srgb, var(--default-color), transparent 40%);
+  padding-bottom: 0 !important;
+}
+
+.pagination-2 ul {
+  display: flex;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.pagination-2 li {
+  margin: 0 5px;
+  transition: 0.3s;
+}
+
+.pagination-2 li a {
+  color: var(--accent-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50% !important;
+  border: 1px solid var(--accent-color);
+}
+
+.pagination-2 li a i {
+  color: var(--accent-color);
+}
+
+.pagination-2 li a.active,
+.pagination-2 li a:hover {
+  background: var(--accent-color);
+  color: var(--contrast-color);
+}
+
+.pagination-2 li a.active i,
+.pagination-2 li a:hover i {
+  color: var(--contrast-color);
+}
+
+.pagination-2 li a.active a,
+.pagination-2 li a:hover a {
+  color: var(--contrast-color);
+}
+
+.pagination-2 .page-item.disabled .page-link i {
+  color: #555555;
+}

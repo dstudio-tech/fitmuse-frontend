@@ -1,0 +1,451 @@
+/*--------------------------------------------------------------
+# Pricing Section
+--------------------------------------------------------------*/
+.pricing {
+  --card-border-radius: 20px;
+}
+
+.pricing .row {
+  justify-content: center;
+}
+
+.pricing .pricing-card {
+  height: 100%;
+  background: var(--surface-color);
+  border-radius: var(--card-border-radius);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  position: relative;
+  transition: all 0.4s;
+  margin-bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+}
+
+.pricing .pricing-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+.pricing .pricing-card.popular {
+  border: 2px solid var(--accent-color);
+}
+
+.pricing .pricing-card.popular .plan-cta .btn-plan {
+  background-color: var(--accent-color);
+  color: var(--contrast-color);
+}
+
+.pricing .pricing-card.popular .plan-cta .btn-plan:hover {
+  background-color: color-mix(in srgb, var(--accent-color), transparent 20%);
+}
+
+.pricing .pricing-card .popular-tag {
+  position: absolute;
+  top: 20px;
+  right: -35px;
+  background-color: var(--accent-color);
+  color: var(--contrast-color);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 40px;
+  transform: rotate(45deg);
+}
+
+.pricing .pricing-card .discount-tag {
+  position: absolute;
+  top: 10px;
+  left: -45px;
+  background-color: var(--accent-color);
+  color: var(--contrast-color);
+  font-size: 20px;
+  font-weight: 600;
+  padding: 12px 40px;
+  transform: rotate(-45deg);
+}
+
+.pricing .plan-header {
+  padding: 30px 30px 20px;
+  text-align: center;
+}
+
+.pricing .plan-header .plan-icon {
+  width: 70px;
+  height: 70px;
+  margin: 0 auto 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: color-mix(in srgb, var(--accent-color), transparent 90%);
+}
+
+.pricing .plan-header .plan-icon i {
+  font-size: 28px;
+  color: var(--accent-color);
+}
+
+.pricing .plan-header h3 {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.pricing .plan-header p {
+  font-size: 15px;
+  color: color-mix(in srgb, var(--default-color), transparent 30%);
+}
+
+.pricing .plan-pricing {
+  text-align: center;
+  padding: 10px 30px 20px;
+  position: relative;
+}
+
+.pricing .plan-pricing .currency {
+  font-size: 24px;
+  vertical-align: top;
+  line-height: 1;
+  color: var(--heading-color);
+  font-weight: 600;
+}
+
+.pricing .plan-pricing .amount {
+  font-size: 60px;
+  font-weight: 700;
+  color: var(--heading-color);
+  line-height: 1;
+}
+
+.pricing .plan-pricing .period {
+  font-size: 16px;
+  color: color-mix(in srgb, var(--default-color), transparent 40%);
+}
+
+.pricing .plan-features {
+  padding: 20px 30px;
+  flex: 1;
+}
+
+.pricing .plan-features ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.pricing .plan-features ul li {
+  padding: 12px 0;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: color-mix(in srgb, var(--default-color), transparent 20%);
+}
+
+.pricing .plan-features ul li.disabled {
+  color: color-mix(in srgb, var(--default-color), transparent 60%);
+}
+
+.pricing .plan-features ul li i {
+  font-size: 18px;
+}
+
+.pricing .plan-features ul li i.bi-check-circle-fill {
+  color: var(--accent-color);
+}
+
+.pricing .plan-features ul li i.bi-x-circle-fill {
+  color: color-mix(in srgb, var(--default-color), transparent 60%);
+}
+
+.pricing .plan-cta {
+  padding: 10px 30px 30px;
+  text-align: center;
+}
+
+.pricing .plan-cta .btn-plan {
+  display: inline-block;
+  width: 100%;
+  padding: 14px 32px;
+  background-color: color-mix(in srgb, var(--default-color), transparent 95%);
+  color: var(--default-color);
+  border-radius: 50px;
+  font-size: 16px;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+
+.pricing .plan-cta .btn-plan:hover {
+  background-color: color-mix(in srgb, var(--default-color), transparent 80%);
+}
+
+@media (max-width: 992px) {
+  .pricing .pricing-card {
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .pricing .plan-pricing .amount {
+    font-size: 48px;
+  }
+
+  .pricing .plan-header {
+    padding: 25px 20px 15px;
+  }
+
+  .pricing .plan-features,
+  .pricing .plan-pricing,
+  .pricing .plan-cta {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+
+/*--------------------------------------------------------------
+# Faq Section
+--------------------------------------------------------------*/
+.faq .faq-card {
+  height: 100%;
+  padding: 40px;
+  background-color: color-mix(in srgb, var(--default-color), transparent 96%);
+  border-radius: 8px;
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+  text-align: center;
+}
+
+.faq .faq-card i {
+  font-size: 48px;
+  color: var(--accent-color);
+  margin-bottom: 20px;
+  display: block;
+}
+
+.faq .faq-card h3 {
+  font-size: 24px;
+  margin-bottom: 15px;
+}
+
+.faq .faq-card p {
+  margin-bottom: 25px;
+  font-size: 15px;
+  line-height: 24px;
+  color: color-mix(in srgb, var(--default-color), transparent 30%);
+}
+
+.faq .faq-card .btn-primary {
+  padding: 8px 20px;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 50px;
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
+  color: var(--contrast-color);
+}
+
+.faq .faq-card .btn-primary:hover {
+  background-color: color-mix(in srgb, var(--accent-color), transparent 20%);
+  border-color: color-mix(in srgb, var(--accent-color), transparent 20%);
+}
+
+.faq .faq-list {
+  padding: 0;
+}
+
+.faq .faq-list .faq-item {
+  position: relative;
+  margin-bottom: 25px;
+  padding: 30px;
+  background-color: var(--surface-color);
+  border-radius: 8px;
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+  cursor: pointer;
+}
+
+.faq .faq-list .faq-item:last-child {
+  margin-bottom: 0;
+}
+
+.faq .faq-list .faq-item h3 {
+  font-size: 18px;
+  line-height: 28px;
+  font-weight: 600;
+  padding-right: 40px;
+  margin-bottom: 0;
+  position: relative;
+  cursor: pointer;
+}
+
+.faq .faq-list .faq-item .faq-content {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: 0.3s ease-in-out;
+  visibility: hidden;
+  opacity: 0;
+}
+
+.faq .faq-list .faq-item .faq-content p {
+  margin-bottom: 0;
+  font-size: 15px;
+  line-height: 24px;
+  overflow: hidden;
+}
+
+.faq .faq-list .faq-item .faq-toggle {
+  position: absolute;
+  right: 30px;
+  top: 30px;
+  font-size: 24px;
+  color: var(--accent-color);
+  transition: transform 0.2s ease;
+}
+
+.faq .faq-list .faq-item.faq-active h3 {
+  color: var(--accent-color);
+}
+
+.faq .faq-list .faq-item.faq-active .faq-content {
+  grid-template-rows: 1fr;
+  visibility: visible;
+  opacity: 1;
+  padding-top: 15px;
+}
+
+.faq .faq-list .faq-item.faq-active .faq-toggle {
+  transform: rotate(45deg);
+}
+
+@media (max-width: 768px) {
+  .faq .faq-list .faq-item {
+    padding: 20px;
+  }
+
+  .faq .faq-list .faq-item h3 {
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  .faq .faq-list .faq-item .faq-toggle {
+    right: 20px;
+    top: 20px;
+    font-size: 20px;
+  }
+}
+
+
+/*--------------------------------------------------------------
+# Stats Section
+--------------------------------------------------------------*/
+.stats .avatars {
+  position: relative;
+}
+
+.stats .avatars img {
+  width: 60px;
+  height: 60px;
+  border: 3px solid var(--accent-color);
+  margin-right: -15px;
+  transition: transform 0.3s ease;
+}
+
+.stats .avatars img:hover {
+  transform: translateY(-5px);
+  z-index: 2;
+}
+
+.stats .counters h2 {
+  color: var(--heading-color);
+  font-size: 48px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.stats .counters h2 span {
+  display: inline-block;
+}
+
+.stats .counters p {
+  color: var(--default-color);
+  font-size: 18px;
+  margin: 0;
+  opacity: 0.9;
+}
+
+@media (max-width: 991px) {
+  .stats .row {
+    text-align: center;
+  }
+
+  .stats .avatars {
+    justify-content: center;
+    margin-bottom: 40px;
+  }
+
+  .stats .counters h2 {
+    font-size: 36px;
+  }
+
+  .stats .counters p {
+    font-size: 16px;
+  }
+
+  .stats .counters .col-md-4 {
+    margin-bottom: 30px;
+  }
+
+  .stats .counters .col-md-4:last-child {
+    margin-bottom: 0;
+  }
+}
+
+@media (max-width: 576px) {
+  .stats {
+    padding: 60px 0;
+  }
+
+  .stats .avatars {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .stats .avatars img {
+    margin: 0 -8px;
+  }
+}
+
+
+/*--------------------------------------------------------------
+# Pricing Card Switch Button
+--------------------------------------------------------------*/
+
+
+/* Toggle labels */
+.d-flex.align-items-center span {
+  color: #fff; /* white text for contrast */
+  font-weight: 600;
+}
+
+
+.form-check-input:checked {
+  background-color: var(--accent-color); /* your golden theme color */
+  border-color: var(--accent-color);
+}
+
+/* Thumb styling */
+.form-check-input:before {
+  background-color: var(--accent-color) !important;
+
+}
+
+.form-check-input:checked:before {
+background-color: #fff; 
+}
+
+/* Optional hover effect */
+.form-check-input:hover {
+  filter: brightness(1.1);
+}

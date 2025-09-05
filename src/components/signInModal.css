@@ -1,0 +1,15 @@
+.signIn-modal .modal-header {
+    border: none !important;
+}
+
+
+.signIn-modal .modal-footer {
+    border: none !important;
+}
+
+/* signInModal.css */
+.form-check-input:checked{
+  background-color: var(--accent-color) !important; /* your custom accent color */
+  border-color: var(--accent-color) !important;
+  box-shadow: none !important; 
+}

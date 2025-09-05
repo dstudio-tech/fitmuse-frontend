@@ -1,0 +1,51 @@
+.demo {
+  width: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.demo:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+
+.bottom-bar {
+  position: relative;
+  width: 100%;
+  backdrop-filter: blur(6px);
+  background: rgba(0, 0, 0, 0.3); /* semi-transparent black */
+  border-bottom-left-radius: 8px;; /* match Bootstrap rounded */
+  border-bottom-right-radius: 8px;;
+  color: #fff;
+  transition: all 0.3s ease;
+}
+
+.avatar-img {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 6px;
+}
+
+.btn-like {
+  background: transparent;
+  border: none;
+  color: var(--accent-color) !important;
+  font-size: 1rem;
+  transition: color 0.2s ease;
+}
+
+.fw-semibold {
+  transition: color 0.2s ease;
+  font-size: 0.8rem !important;
+  font-weight: 300 !important;
+}
+
+.btn-like:hover, .fw-semibold:hover {
+  color: var(--accent-color); /* pink/red on hover */
+}

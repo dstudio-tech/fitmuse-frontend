@@ -1,0 +1,351 @@
+/*--------------------------------------------------------------
+# Portfolio Details Section
+--------------------------------------------------------------*/
+.portfolio-details {
+  --section-spacing: 2.5rem;
+}
+
+.portfolio-details .portfolio-details-content .model-image{
+  height: 100px;
+  width: 100px;
+}
+
+.portfolio-details .portfolio-details-media {
+  position: relative;
+}
+
+.portfolio-details .portfolio-details-media .main-image {
+  margin-bottom: 1rem;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.portfolio-details .portfolio-details-media .main-image .portfolio-details-slider {
+  position: relative;
+}
+
+.portfolio-details .portfolio-details-media .main-image .portfolio-details-slider .swiper-wrapper {
+  height: auto !important;
+}
+
+.portfolio-details .portfolio-details-media .main-image .portfolio-details-slider .swiper-slide img {
+  aspect-ratio: 16/9;
+  object-fit: cover;
+  width: 100%;
+}
+
+.portfolio-details .portfolio-details-media .main-image .portfolio-details-slider .swiper-button-next,
+.portfolio-details .portfolio-details-media .main-image .portfolio-details-slider .swiper-button-prev {
+  background-color: var(--contrast-color);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.portfolio-details .portfolio-details-media .main-image .portfolio-details-slider .swiper-button-next:after,
+.portfolio-details .portfolio-details-media .main-image .portfolio-details-slider .swiper-button-prev:after {
+  font-size: 16px;
+  color: var(--accent-color);
+  font-weight: bold;
+}
+
+.portfolio-details .portfolio-details-media .main-image .portfolio-details-slider .swiper-button-next:hover,
+.portfolio-details .portfolio-details-media .main-image .portfolio-details-slider .swiper-button-prev:hover {
+  background-color: var(--accent-color);
+}
+
+.portfolio-details .portfolio-details-media .main-image .portfolio-details-slider .swiper-button-next:hover:after,
+.portfolio-details .portfolio-details-media .main-image .portfolio-details-slider .swiper-button-prev:hover:after {
+  color: var(--contrast-color);
+}
+
+.portfolio-details .portfolio-details-media .thumbnail-grid .demo {
+  width: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.portfolio-details .portfolio-details-media .thumbnail-grid .demo:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+.portfolio-details .tech-stack-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.portfolio-details  .tech-stack-badges span {
+  display: inline-block;
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 20px;
+  background-color: color-mix(in srgb, var(--heading-color), transparent 85%);
+  color: var(--heading-color);
+  transition: all 0.3s ease;
+}
+
+.portfolio-details .portfolio-details-media .tech-stack-badges span:hover {
+  background-color: color-mix(in srgb, var(--heading-color), transparent 70%);
+  transform: translateY(-2px);
+}
+
+.portfolio-details .portfolio-details-content {
+  padding: 0 0 0 2rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.portfolio-details .portfolio-details-content .project-meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.portfolio-details .portfolio-details-content .project-meta .badge-wrapper .project-badge {
+  display: inline-block;
+  padding: 8px 16px;
+  background-color: color-mix(in srgb, var(--accent-color), transparent 90%);
+  color: var(--accent-color);
+  border-radius: 30px;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.portfolio-details .portfolio-details-content .project-meta .date-client {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.portfolio-details .portfolio-details-content .project-meta .date-client .meta-item {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: color-mix(in srgb, var(--default-color), transparent 30%);
+}
+
+.portfolio-details .portfolio-details-content .project-meta .date-client .meta-item i {
+  margin-right: 6px;
+  color: var(--accent-color);
+}
+
+.portfolio-details .portfolio-details-content .project-title {
+  font-size: 2.2rem;
+  margin-bottom: 1rem;
+  margin-top: 0.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--heading-color);
+}
+
+.portfolio-details .portfolio-details-content .project-website {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.portfolio-details .portfolio-details-content .project-website i {
+  font-size: 22px;
+  color: var(--accent-color);
+  margin-right: 8px;
+}
+
+.portfolio-details .portfolio-details-content .project-website a {
+  font-weight: 500;
+  transition: all 0.3s;
+}
+
+.portfolio-details .portfolio-details-content .project-website a:hover {
+  letter-spacing: 0.5px;
+}
+
+.portfolio-details .portfolio-details-content .project-overview {
+  margin-bottom: var(--section-spacing);
+}
+
+.portfolio-details .portfolio-details-content .project-overview .lead {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: color-mix(in srgb, var(--default-color), transparent 15%);
+  margin-bottom: 1rem;
+}
+
+.portfolio-details .portfolio-details-content .project-overview .project-accordion .accordion-item {
+  border: none;
+  background: none;
+  margin-bottom: 10px;
+}
+
+.portfolio-details .portfolio-details-content .project-overview .project-accordion .accordion-item .accordion-header .accordion-button {
+  padding: 1rem;
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--heading-color);
+  background-color: color-mix(in srgb, var(--surface-color), transparent 70%);
+  border-radius: 8px !important;
+  box-shadow: none;
+}
+
+.portfolio-details .portfolio-details-content .project-overview .project-accordion .accordion-item .accordion-header .accordion-button:not(.collapsed) {
+  background-color: var(--surface-color);
+  color: var(--accent-color);
+  border-bottom-left-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+}
+
+.portfolio-details .portfolio-details-content .project-overview .project-accordion .accordion-item .accordion-header .accordion-button:not(.collapsed) i {
+  color: var(--accent-color);
+}
+
+.portfolio-details .portfolio-details-content .project-overview .project-accordion .accordion-item .accordion-header .accordion-button::after {
+  background-size: 14px;
+  width: 14px;
+  height: 14px;
+}
+
+.portfolio-details .portfolio-details-content .project-overview .project-accordion .accordion-item .accordion-header .accordion-button i {
+  font-size: 1.1rem;
+}
+
+.portfolio-details .portfolio-details-content .project-overview .project-accordion .accordion-item .accordion-body {
+  padding: 1rem;
+  background-color: var(--surface-color);
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.portfolio-details .portfolio-details-content .project-overview .project-accordion .accordion-item .accordion-body p {
+  margin-bottom: 0;
+  color: color-mix(in srgb, var(--default-color), transparent 25%);
+  line-height: 1.6;
+}
+
+.portfolio-details .portfolio-details-content .project-features {
+  margin-bottom: var(--section-spacing);
+}
+
+.portfolio-details  h3 {
+  display: flex;
+  align-items: center;
+  font-size: 1.25rem;
+  margin-bottom: 1.2rem;
+}
+
+.portfolio-details  h3 i {
+  margin-right: 10px;
+  color: var(--accent-color);
+  font-size: 1.1em;
+}
+
+.portfolio-details .portfolio-details-content .project-features .feature-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.portfolio-details .portfolio-details-content .project-features .feature-list li {
+  display: flex;
+  align-items: center;
+  padding: 8px 0;
+  font-size: 15px;
+  color: color-mix(in srgb, var(--default-color), transparent 15%);
+}
+
+.portfolio-details .portfolio-details-content .project-features .feature-list li i {
+  color: var(--accent-color);
+  margin-right: 10px;
+  font-size: 1.1em;
+}
+
+.portfolio-details  .cta-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 2.5rem;
+}
+
+.portfolio-details  .cta-buttons .btn-view-project {
+  padding: 12px 28px;
+  background-color: var(--accent-color);
+  color: var(--contrast-color);
+  border-radius: 30px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.portfolio-details  .cta-buttons .btn-view-project:hover {
+  background-color: color-mix(in srgb, var(--accent-color), black 15%);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+.portfolio-details  .cta-buttons .btn-next-project {
+  padding: 12px 28px;
+  background-color: color-mix(in srgb, var(--heading-color), transparent 90%);
+  color: var(--heading-color);
+  border-radius: 30px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.portfolio-details  .cta-buttons .btn-next-project i {
+  transition: transform 0.3s ease;
+}
+
+.portfolio-details  .cta-buttons .btn-next-project:hover {
+  background-color: color-mix(in srgb, var(--heading-color), transparent 80%);
+}
+
+.portfolio-details .cta-buttons .btn-next-project:hover i {
+  transform: translateX(3px);
+}
+
+@media (max-width: 1199.98px) {
+  .portfolio-details .portfolio-details-content {
+    padding-left: 1rem;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .portfolio-details .portfolio-details-content {
+    padding: 2rem 0 0 0;
+  }
+
+  .portfolio-details .cta-buttons {
+    margin-top: 2rem;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .portfolio-details .project-meta {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .portfolio-details .project-meta .date-client {
+    flex-direction: row;
+    gap: 0.5rem;
+  }
+
+  .portfolio-details .cta-buttons {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .portfolio-details .cta-buttons a {
+    width: 100%;
+    text-align: center;
+  }
+}

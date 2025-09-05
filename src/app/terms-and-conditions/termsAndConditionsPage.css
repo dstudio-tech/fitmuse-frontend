@@ -1,0 +1,5 @@
+.terms-and-conditions .list-item p {
+  padding: 0;
+  word-wrap: break-word !important;
+  white-space: pre-wrap !important;
+}

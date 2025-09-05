@@ -1,0 +1,48 @@
+/*--------------------------------------------------------------
+# Popover
+--------------------------------------------------------------*/
+
+/* Popover container */
+.popover {
+  max-width: 260px; /* adjust width if needed */
+  border: none; /* remove default border */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-radius: 1rem !important;
+}
+
+/* Popover header (if used) */
+.popover-header {
+  background-color: var(--accent-color);
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+  border-bottom: none;
+  border-radius: 1rem;
+}
+
+/* Popover body (content) */
+.popover-body {
+  background-color: var(--accent-color);
+  color: white;
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 0.75rem 1rem;
+ border-radius: 1rem;
+}
+
+/* Popover arrow */
+.popover.bs-popover-bottom .popover-arrow::before {
+  border-bottom-color: var(--accent-color);
+}
+
+/* Adjust arrow for other placements if needed */
+.popover.bs-popover-end .popover-arrow::before {
+  border-right-color: var(--accent-color);
+}
+
+.popover.bs-popover-top .popover-arrow::before {
+  border-top-color: var(--accent-color);
+}
+.popover.bs-popover-start .popover-arrow::before {
+  border-left-color: var(--accent-color);
+}
