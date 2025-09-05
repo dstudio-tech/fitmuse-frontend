@@ -21,7 +21,7 @@ export default function CanvasImageWithGlightbox({
   mediaUrl,
   alt,
   className,
-  watermarkText = "© FitMuse",
+  watermarkText = "© fitmuse.club",
   documentId,
 }: CanvasImageProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -92,7 +92,7 @@ export default function CanvasImageWithGlightbox({
 
           // === Add watermark ===
           ctx.font = `${Math.floor(canvas.width / 15)}px Arial`;
-          ctx.fillStyle = "rgba(255,255,255,0.1)";
+          ctx.fillStyle = "rgba(255,255,255,0.4)";
           ctx.textAlign = "center";
           ctx.textBaseline = "middle";
           ctx.fillText(watermarkText, canvas.width / 2, canvas.height / 2);
@@ -170,6 +170,7 @@ export default function CanvasImageWithGlightbox({
       aria-label={alt}
       onClick={handleClick}
       onContextMenu={(e) => e.preventDefault()}
+      onDragStart={(e) => e.preventDefault()}
       style={{ cursor: "pointer" }}
     />
   );

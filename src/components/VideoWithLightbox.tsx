@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
+import Preloader from "./Preloader";
 
 type LightboxAPI = { open: () => void; destroy: () => void };
 interface GlightboxOptions {
@@ -212,7 +213,9 @@ export default function VideoWithLightbox({
           onContextMenu={(e) => e.preventDefault()}
           onDragStart={(e) => e.preventDefault()}
         />
-      ) : null}
+      ) : (
+        <Preloader />
+      )}
     </>
   );
 }
