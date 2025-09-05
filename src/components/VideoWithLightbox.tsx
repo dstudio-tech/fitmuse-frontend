@@ -6,7 +6,7 @@ type LightboxAPI = {
   open: () => void;
   destroy: () => void;
 };
-type GlightboxCtor = (opts: any) => LightboxAPI;
+type GlightboxCtor = (opts: unknown) => LightboxAPI;
 let Glightbox: GlightboxCtor | null = null;
 
 interface VideoLightboxProps {
@@ -140,7 +140,7 @@ export default function VideoWithLightbox({
     const tempUrl = URL.createObjectURL(videoBlobRef.current);
     lightboxUrlRef.current = tempUrl;
 
-    const lb = Glightbox({
+    const lb = Glightbox?.({
       elements: [
         {
           href: tempUrl,
@@ -181,7 +181,7 @@ export default function VideoWithLightbox({
           lightboxUrlRef.current = null;
         }
       },
-    });
+    } as unknown);
 
     lightboxRef.current = lb;
     lb.open();
