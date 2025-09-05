@@ -114,17 +114,21 @@ export default function VideoWithLightbox({
     await incrementPostViews(documentId);
   };
   return (
-    <video
-      ref={videoRef}
-      src={videoUrl}
-      className={`cursor-pointer ${className}`}
-      autoPlay
-      muted
-      loop
-      playsInline
-      controls={false} // no controls in preview mode
-      onClick={handleClick}
-      onContextMenu={(e) => e.preventDefault()} // disable right-click
-    />
+    <>
+      {videoBlobUrl ? (
+        <video
+          ref={videoRef}
+          src={videoBlobUrl}
+          className={`cursor-pointer ${className}`}
+          autoPlay
+          muted
+          loop
+          playsInline
+          controls={false} // no controls in preview mode
+          onClick={handleClick}
+          onContextMenu={(e) => e.preventDefault()} // disable right-click
+        />
+      ) : null}
+    </>
   );
 }
