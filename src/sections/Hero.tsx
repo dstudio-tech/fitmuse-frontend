@@ -101,7 +101,7 @@ export default function Hero() {
                   </a>
 
                   <Link
-                    href={hero?.videoBtn?.link || "#"}
+                    href="#"
                     onClick={handleVideoClick}
                     className="action-btn secondary"
                   >
