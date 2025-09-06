@@ -153,11 +153,9 @@ export default function PostMediaItem({ item }: { item: PostItemProps }) {
               className="demo glightbox"
               documentId={item?.documentId}
             />
-
             {/* Bottom overlay bar */}
             <div className="bottom-bar d-flex align-items-center justify-content-between px-1 py-1">
               {/* Avatar + Name */}
-
               <a
                 href={`/muse/${item?.model?.documentId}`}
                 className="d-flex align-items-center text-decoration-none text-white"

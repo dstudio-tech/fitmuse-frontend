@@ -1,53 +1,149 @@
 "use client";
+
 import { useEffect, useRef, useState } from "react";
 import Preloader from "./Preloader";
 
+/* ----------------- Glightbox typings ----------------- */
 type LightboxAPI = { open: () => void; destroy: () => void };
 interface GlightboxOptions {
-  elements: Array<{ href: string; type: string; source: string }>;
+  elements: Array<{ content: string; type: "inline" }>;
   autoplayVideos?: boolean;
-  openEffect?: string;
-  closeEffect?: string;
+  openEffect?: "zoom" | "fade" | "none";
+  closeEffect?: "zoom" | "fade" | "none";
   onOpen?: () => void;
   onClose?: () => void;
 }
 type GlightboxCtor = (opts: GlightboxOptions) => LightboxAPI;
 let Glightbox: GlightboxCtor | null = null;
 
+/* ----------------- Props ----------------- */
 interface VideoLightboxProps {
-  videoUrl: string; // signed S3 video URL (via your API)
+  videoUrl: string;
   className?: string;
   documentId: string;
+  watermarkText?: string;
 }
 
+/* ----------------- Watermark (bottom-center) ----------------- */
+function drawWatermark(
+  ctx: CanvasRenderingContext2D,
+  cw: number,
+  ch: number,
+  text: string
+) {
+  const margin = Math.round(Math.min(cw, ch) * 0.02);
+  const padX = 10;
+  const padY = 8;
+
+  ctx.save();
+  ctx.globalAlpha = 0.9;
+  ctx.font = `bold ${Math.max(
+    14,
+    Math.round(ch * 0.022)
+  )}px system-ui,-apple-system, Segoe UI, Roboto, Arial`;
+  ctx.textBaseline = "bottom";
+
+  const m = ctx.measureText(text);
+  const boxW = m.width + padX * 2;
+  const boxH = Math.max(Math.round(ch * 0.04), 28);
+  const x = Math.round((cw - boxW) / 2);
+  const y = ch - boxH - margin;
+
+  // background rounded rect
+  ctx.fillStyle = "rgba(0,0,0,0.55)";
+  const r = 10;
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + boxW, y, x + boxW, y + boxH, r);
+  ctx.arcTo(x + boxW, y + boxH, x, y + boxH, r);
+  ctx.arcTo(x, y + boxH, x, y, r);
+  ctx.arcTo(x, y, x + boxW, y, r);
+  ctx.closePath();
+  ctx.fill();
+
+  // text
+  ctx.fillStyle = "#fff";
+  ctx.fillText(text, x + padX, y + boxH - padY);
+  ctx.restore();
+}
+
+/* ----------------- Utilities ----------------- */
+function ensureGlightboxDarkCSS() {
+  const id = "glb-dark-overrides";
+  if (typeof document === "undefined" || document.getElementById(id)) return;
+  const style = document.createElement("style");
+  style.id = id;
+  style.textContent = `
+.glightbox-container, .goverlay { background: rgba(0,0,0,0.96) !important; }
+.gslide, .gslide-media, .gslide-inline { background: transparent !important; }
+.glightbox-clean .ginner { padding: 0 !important; }
+.gslide-inline .gslide-media { padding: 0 !important; }
+.gslide-description, .gdesc-inner { display: none !important; }
+.glightbox-container .ginner, .gslide, .gslide-media {width:fit-content !important; height: auto !important;}
+`;
+  document.head.appendChild(style);
+}
+
+/** Remove any <video> tags Glightbox/theme might inject */
+function removeDomVideosIn(root: Element | Document) {
+  const videos = root.querySelectorAll("video");
+  videos.forEach((el) => {
+    const v = el as HTMLVideoElement;
+    try {
+      v.pause();
+    } catch {}
+    v.remove();
+  });
+}
+
+/** rAF loop helper with cancel */
+function startRafLoop(fn: () => void) {
+  let id = 0;
+  const loop = () => {
+    id = requestAnimationFrame(loop);
+    fn();
+  };
+  id = requestAnimationFrame(loop);
+  return () => cancelAnimationFrame(id);
+}
+
+/* ----------------- Component ----------------- */
 export default function VideoWithLightbox({
   videoUrl,
   className,
   documentId,
+  watermarkText = "fitmuse",
 }: VideoLightboxProps) {
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  // Keep the Blob in memory; derive short-lived URLs from it
-  const videoBlobRef = useRef<Blob | null>(null);
-
-  // Preview URL for the inline <video>
+  // Visible preview canvas; decoding uses an off-DOM <video>
+  const previewCanvasRef = useRef<HTMLCanvasElement>(null);
+  const previewVideoRef = useRef<HTMLVideoElement | null>(null); // off-DOM
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
-  // Lightbox lifetimes
-  const lightboxUrlRef = useRef<string | null>(null);
+  // Blob & lightbox
+  const videoBlobRef = useRef<Blob | null>(null);
   const lightboxRef = useRef<LightboxAPI | null>(null);
+  const lightboxUrlRef = useRef<string | null>(null);
+  const lightboxCleanupRef = useRef<(() => void) | null>(null);
 
+  const [inlineCanvasId] = useState(
+    () => `cv-${Math.random().toString(36).slice(2)}`
+  );
+  const [inlineBoxId] = useState(
+    () => `box-${Math.random().toString(36).slice(2)}`
+  );
+
+  // Load Glightbox on client
   useEffect(() => {
-    import("glightbox").then((module) => {
-      Glightbox = module.default as unknown as GlightboxCtor;
-    });
+    (async () => {
+      const m = await import("glightbox");
+      Glightbox = m.default as unknown as GlightboxCtor;
+    })();
   }, []);
 
-  // Fetch protected media -> store Blob -> create preview URL
+  // Fetch signed media → Blob in memory → preview URL
   useEffect(() => {
     let cancelled = false;
-
-    const fetchSignedMedia = async () => {
+    (async () => {
       try {
         const res = await fetch(
           `/api/get-signed-media?mediaPath=${encodeURIComponent(videoUrl)}`,
@@ -56,137 +152,261 @@ export default function VideoWithLightbox({
         if (!res.ok) throw new Error("Failed to fetch signed media");
         const blob = await res.blob();
         if (cancelled) return;
-
         videoBlobRef.current = blob;
-
-        // Create preview URL (we'll revoke on unmount or when preview ends)
-        const url = URL.createObjectURL(blob);
-        setPreviewUrl(url);
-      } catch (err) {
-        console.error("Error fetching video blob:", err);
+        setPreviewUrl(URL.createObjectURL(blob));
+      } catch (e) {
+        console.error("Error fetching video blob:", e);
       }
-    };
-
-    fetchSignedMedia();
+    })();
 
     return () => {
       cancelled = true;
-
-      // Cleanup preview URL
       if (previewUrl) {
         try {
           URL.revokeObjectURL(previewUrl);
         } catch {}
       }
-
-      // Cleanup lightbox URL
       if (lightboxUrlRef.current) {
         try {
           URL.revokeObjectURL(lightboxUrlRef.current);
         } catch {}
         lightboxUrlRef.current = null;
       }
-
-      // Destroy lightbox if open
       if (lightboxRef.current) {
         try {
           lightboxRef.current.destroy();
         } catch {}
         lightboxRef.current = null;
       }
+      if (previewVideoRef.current) {
+        try {
+          previewVideoRef.current.pause();
+          previewVideoRef.current.src = "";
+          previewVideoRef.current.load();
+        } catch {}
+        previewVideoRef.current = null;
+      }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [videoUrl]);
 
-  // Revoke preview URL only when the preview video finishes or unmounts
+  // Preview painter — native backing store, CSS scales
   useEffect(() => {
-    const el = videoRef.current;
-    if (!el || !previewUrl) return;
+    const canvas = previewCanvasRef.current;
+    if (!canvas || !previewUrl) return;
 
-    const onEnded = () => {
-      // User watched the preview loop to the end; safe to revoke
-      try {
-        URL.revokeObjectURL(previewUrl);
-      } catch {}
-      setPreviewUrl(null);
+    if (!previewVideoRef.current) {
+      const v = document.createElement("video");
+      v.playsInline = true;
+      v.muted = true;
+      v.loop = true;
+      v.preload = "auto";
+      previewVideoRef.current = v;
+    }
+    const video = previewVideoRef.current;
+
+    const ctx = canvas.getContext("2d");
+    let stop: (() => void) | null = null;
+
+    const layoutToNative = () => {
+      const w = video.videoWidth || 0;
+      const h = video.videoHeight || 0;
+      if (w && h) {
+        canvas.width = w;
+        canvas.height = h;
+        canvas.style.width = "100%";
+        canvas.style.height = "100%";
+      }
     };
 
-    // Some browsers fire 'emptied' when source is detached
-    const onEmptied = () => {
+    const draw = () => {
+      if (!ctx || video.readyState < 2) return;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
       try {
-        URL.revokeObjectURL(previewUrl);
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
       } catch {}
-      setPreviewUrl(null);
+      drawWatermark(ctx, canvas.width, canvas.height, watermarkText);
     };
 
-    el.addEventListener("ended", onEnded);
-    el.addEventListener("emptied", onEmptied);
+    const start = async () => {
+      try {
+        video.src = previewUrl;
+      } catch {}
+      const onMeta = () => {
+        layoutToNative();
+        stop = startRafLoop(draw);
+        void video.play().catch(() => {});
+      };
+      if (video.readyState >= 1) onMeta();
+      else video.addEventListener("loadedmetadata", onMeta, { once: true });
+    };
+
+    start();
+
     return () => {
-      el.removeEventListener("ended", onEnded);
-      el.removeEventListener("emptied", onEmptied);
+      if (stop) stop();
+      try {
+        video.pause();
+      } catch {}
     };
-  }, [previewUrl]);
+  }, [previewUrl, watermarkText]);
 
-  const incrementPostViews = async (documentId: string) => {
+  // Views
+  const incrementPostViews = async (id: string) => {
     try {
       const res = await fetch("/api/post-media/views", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ documentId }),
+        body: JSON.stringify({ documentId: id }),
       });
       if (!res.ok) throw new Error(`Failed to update views: ${res.statusText}`);
       return await res.json();
-    } catch (error) {
-      console.error("❌ Error updating views:", error);
+    } catch (e) {
+      console.error("❌ Error updating views:", e);
       return null;
     }
   };
 
+  // Open Glightbox — inline canvas only; native backing store; watermark each frame
   const handleClick = async () => {
     if (!Glightbox || !videoBlobRef.current) return;
 
-    // Create a fresh URL for the lightbox; keep it alive for the session
+    ensureGlightboxDarkCSS();
+
     const tempUrl = URL.createObjectURL(videoBlobRef.current);
     lightboxUrlRef.current = tempUrl;
 
+    const lightboxVideo = document.createElement("video");
+    lightboxVideo.playsInline = true;
+    lightboxVideo.muted = false;
+    lightboxVideo.preload = "auto";
+
+    const html = `
+      <div style="position:relative;margin:0 auto;display:flex;align-items:center;justify-content:center;width:100%;height:100%;">
+        <div id="${inlineBoxId}"
+             style="
+               aspect-ratio: 9 / 16;
+               width: min(92vw, calc(92vh * 9 / 16));
+               max-height: 92vh;
+               position: relative;
+               background: #000;
+               border-radius: 8px;
+               overflow: hidden;
+               display:flex;align-items:center;justify-content:center;">
+          <canvas id="${inlineCanvasId}"
+                  style="position:absolute; inset:0; width:100%; height:100%;
+                         background:#000; border-radius:8px;"></canvas>
+        </div>
+      </div>
+    `;
+
     const lb = Glightbox({
-      elements: [{ href: tempUrl, type: "video", source: "local" }],
-      autoplayVideos: true,
+      elements: [{ content: html, type: "inline" }],
+      autoplayVideos: false,
       openEffect: "zoom",
       closeEffect: "zoom",
       onOpen: () => {
-        // Start playback when lightbox DOM is ready
         setTimeout(() => {
-          const videoEl = document.querySelector(
-            ".gslide-video video"
-          ) as HTMLVideoElement | null;
+          // Safety: remove any DOM <video> Glightbox might insert
+          const slideRoot =
+            (document.querySelector(
+              ".glightbox-container .gslide"
+            ) as Element) ||
+            (document.querySelector(".glightbox-container") as Element) ||
+            document;
+          removeDomVideosIn(slideRoot);
 
-          if (videoEl) {
-            // Ensure it can play with sound
-            videoEl.muted = false;
-            void videoEl.play().catch(() => {});
+          const box = document.getElementById(
+            inlineBoxId
+          ) as HTMLDivElement | null;
+          const c = document.getElementById(
+            inlineCanvasId
+          ) as HTMLCanvasElement | null;
+          if (!box || !c) return;
 
-            // Revoke if user watches to the end inside lightbox
-            const onEnded = () => {
-              if (lightboxUrlRef.current) {
-                try {
-                  URL.revokeObjectURL(lightboxUrlRef.current);
-                } catch {}
-                lightboxUrlRef.current = null;
-              }
-              videoEl.removeEventListener("ended", onEnded);
+          const ctx = c.getContext("2d");
+          if (!ctx) return;
+
+          // Set canvas backing store to **native** size when we know it
+          const layoutToNative = () => {
+            const w = lightboxVideo.videoWidth || 0;
+            const h = lightboxVideo.videoHeight || 0;
+            if (w && h) {
+              c.width = w;
+              c.height = h;
+              // CSS scales to fill the portrait box
+              c.style.width = "100%";
+              c.style.height = "100%";
+            }
+          };
+
+          let stop: (() => void) | null = null;
+
+          const draw = () => {
+            if (lightboxVideo.readyState < 2) return;
+            ctx.clearRect(0, 0, c.width, c.height);
+            try {
+              ctx.drawImage(lightboxVideo, 0, 0, c.width, c.height);
+            } catch {}
+            drawWatermark(ctx, c.width, c.height, watermarkText);
+          };
+
+          const start = async () => {
+            try {
+              lightboxVideo.src = tempUrl;
+            } catch {}
+            const onMeta = () => {
+              layoutToNative();
+              stop = startRafLoop(draw);
+              void lightboxVideo.play().catch(() => {});
             };
-            videoEl.addEventListener("ended", onEnded, { once: true });
-          }
-        }, 200);
+            if (lightboxVideo.readyState >= 1) onMeta();
+            else
+              lightboxVideo.addEventListener("loadedmetadata", onMeta, {
+                once: true,
+              });
+          };
+
+          start();
+
+          const cleanup = () => {
+            if (stop) stop();
+            try {
+              lightboxVideo.pause();
+              lightboxVideo.src = "";
+              lightboxVideo.load();
+            } catch {}
+          };
+
+          const onEnded = () => {
+            if (lightboxUrlRef.current) {
+              try {
+                URL.revokeObjectURL(lightboxUrlRef.current);
+              } catch {}
+              lightboxUrlRef.current = null;
+            }
+            lightboxVideo.removeEventListener("ended", onEnded);
+          };
+          lightboxVideo.addEventListener("ended", onEnded);
+
+          // store cleanup (typed, no `any`)
+          lightboxCleanupRef.current = cleanup;
+        }, 80);
       },
       onClose: () => {
-        // Revoke on close (covers seek/loop/partial watch cases)
         if (lightboxUrlRef.current) {
           try {
             URL.revokeObjectURL(lightboxUrlRef.current);
           } catch {}
           lightboxUrlRef.current = null;
+        }
+        const fn = lightboxCleanupRef.current;
+        if (fn) {
+          try {
+            fn();
+          } finally {
+            lightboxCleanupRef.current = null;
+          }
         }
       },
     });
@@ -200,19 +420,39 @@ export default function VideoWithLightbox({
   return (
     <>
       {previewUrl ? (
-        <video
-          ref={videoRef}
-          src={previewUrl}
-          className={`cursor-pointer ${className ?? ""}`}
-          autoPlay
-          muted
-          loop
-          playsInline
-          controls={false}
-          onClick={handleClick}
-          onContextMenu={(e) => e.preventDefault()}
-          onDragStart={(e) => e.preventDefault()}
-        />
+        <div
+          className={`relative ${className ?? ""}`}
+          style={{ width: "100%", maxWidth: 360 }}
+        >
+          {/* 9:16 preview frame with rounded corners */}
+          <div
+            style={{
+              position: "relative",
+              width: "100%",
+              paddingTop: "177.7778%", // 9:16
+              borderRadius: 8,
+              overflow: "hidden",
+              background: "#000",
+            }}
+            className="cursor-pointer"
+            onClick={handleClick}
+            onContextMenu={(e) => e.preventDefault()}
+            onDragStart={(e) => e.preventDefault()}
+          >
+            {/* Visible canvas ONLY (no <video> in DOM) */}
+            <canvas
+              ref={previewCanvasRef}
+              style={{
+                position: "absolute",
+                inset: 0,
+                width: "100%",
+                height: "100%",
+                background: "#000",
+                borderRadius: 8,
+              }}
+            />
+          </div>
+        </div>
       ) : (
         <Preloader />
       )}

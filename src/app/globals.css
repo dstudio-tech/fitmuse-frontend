@@ -149,14 +149,17 @@ section.Toastify{
 /*--------------------------------------------------------------
 # Glightbox Adjustment
 --------------------------------------------------------------*/
-.plyr__video-wrapper--fixed-ratio {
+/* .plyr__video-wrapper--fixed-ratio {
      aspect-ratio: 13/16 !important;
   }
 
  .plyr__poster{
     width:fit-content !important;
-  }
+  } */
 
+  /* .gslide { aspect-ratio: 13/16 !important;}
+
+  .ginlined-content{ width:fit-content !important; height: 80vh;} */
 
 /*--------------------------------------------------------------
 # Disable aos animation delay on mobile devices
