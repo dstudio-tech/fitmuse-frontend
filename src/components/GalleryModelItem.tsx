@@ -15,6 +15,7 @@ type GlightboxCtor = (opts: unknown) => LightboxAPI;
 let Glightbox: GlightboxCtor | null = null;
 
 import "./galleryModelItem.css";
+import MediaItemLoader from "./MediaItemLoader";
 
 export default function GalleryModelItem({
   model,
@@ -199,7 +200,7 @@ export default function GalleryModelItem({
         page === "/profile" ? "col-xl-3" : "col-xl-2"
       } col-lg-3 col-md-4 portfolio-item isotope-item`}
     >
-      {model.thumbnail.url && (
+      {model.thumbnail.url ? (
         <article className="portfolio-entry">
           <figure className="entry-image">
             {blobUrl && (
@@ -248,6 +249,8 @@ export default function GalleryModelItem({
             </div>
           </figure>
         </article>
+      ) : (
+        <MediaItemLoader />
       )}
     </div>
   );

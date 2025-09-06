@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
+import MediaItemLoader from "./MediaItemLoader";
 // ✅ Keep what you need strongly typed (the API you call)
 type LightboxAPI = { open: () => void; destroy: () => void };
 
@@ -164,14 +165,20 @@ export default function CanvasImageWithGlightbox({
   };
 
   return (
-    <canvas
-      ref={canvasRef}
-      className={className}
-      aria-label={alt}
-      onClick={handleClick}
-      onContextMenu={(e) => e.preventDefault()}
-      onDragStart={(e) => e.preventDefault()}
-      style={{ cursor: "pointer" }}
-    />
+    <>
+      {mediaUrl ? (
+        <canvas
+          ref={canvasRef}
+          className={className}
+          aria-label={alt}
+          onClick={handleClick}
+          onContextMenu={(e) => e.preventDefault()}
+          onDragStart={(e) => e.preventDefault()}
+          style={{ cursor: "pointer" }}
+        />
+      ) : (
+        <MediaItemLoader />
+      )}
+    </>
   );
 }

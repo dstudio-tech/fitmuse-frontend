@@ -1,7 +1,6 @@
 "use client";
-
 import { useEffect, useRef, useState } from "react";
-import Preloader from "./Preloader";
+import MediaItemLoader from "./MediaItemLoader";
 
 /* ----------------- Glightbox typings ----------------- */
 type LightboxAPI = { open: () => void; destroy: () => void };
@@ -454,7 +453,7 @@ export default function VideoWithLightbox({
           </div>
         </div>
       ) : (
-        <Preloader />
+        <MediaItemLoader />
       )}
     </>
   );

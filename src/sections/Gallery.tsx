@@ -13,6 +13,7 @@ import GalleryModelItem from "@/components/GalleryModelItem";
 import Preloader from "@/components/Preloader";
 import Pagination from "@/components/Pagination";
 import "./gallery.css";
+import MediaItemLoader from "@/components/MediaItemLoader";
 
 export default function Gallery({
   pageSize = 12,
@@ -135,7 +136,7 @@ export default function Gallery({
                   <GalleryModelItem key={item.id} model={item} />
                 ))
               ) : (
-                <Preloader />
+                <MediaItemLoader />
               )}
             </div>
             <div className="row mt-5">
