@@ -77,7 +77,6 @@ function ensureGlightboxDarkCSS() {
 .gslide, .gslide-media, .gslide-inline { background: transparent !important; }
 .glightbox-clean .ginner { padding: 0 !important; }
 .gslide-inline .gslide-media { padding: 0 !important; }
-.gslide-description, .gdesc-inner { display: none !important; }
 .glightbox-container .ginner, .gslide, .gslide-media {width:fit-content !important; height: auto !important;}
 `;
   document.head.appendChild(style);

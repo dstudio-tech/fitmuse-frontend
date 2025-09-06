@@ -149,6 +149,10 @@ section.Toastify{
 /*--------------------------------------------------------------
 # Glightbox Adjustment
 --------------------------------------------------------------*/
+
+.gslide-desc {
+  color: var(--background-color) !important;
+}
 /* .plyr__video-wrapper--fixed-ratio {
      aspect-ratio: 13/16 !important;
   } */
