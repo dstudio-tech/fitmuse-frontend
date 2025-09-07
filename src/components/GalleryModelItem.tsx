@@ -203,7 +203,7 @@ export default function GalleryModelItem({
       {model.thumbnail.url ? (
         <article className="portfolio-entry">
           <figure className="entry-image">
-            {blobUrl && (
+            {blobUrl ? (
               <canvas
                 ref={canvasRef}
                 className="img-fluid hero-gallery-img"
@@ -212,6 +212,8 @@ export default function GalleryModelItem({
                 style={{ cursor: "pointer" }}
                 aria-label={`${model.name} Image`}
               />
+            ) : (
+              <MediaItemLoader />
             )}
             <div className="entry-overlay">
               <div className="overlay-content">
