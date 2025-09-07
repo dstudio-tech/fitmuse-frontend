@@ -1,7 +1,11 @@
 "use client";
 import React, { useContext, useEffect, useState } from "react";
 import Link from "next/link";
-import { BackendUrlContext, UserContext } from "@/components/SessionProvider";
+import {
+  BackendUrlContext,
+  FavouritesContext,
+  UserContext,
+} from "@/components/SessionProvider";
 import {
   GalleryModelItemProps,
   MetaDataProps,
@@ -12,6 +16,8 @@ import Pagination from "@/components/Pagination";
 import Preloader from "@/components/Preloader";
 import PostMediaItem from "@/components/PostMediaItem";
 import ShareSci from "@/components/ShareSci";
+import "./profileDetails.css";
+import { toast } from "react-toastify";
 
 export default function ProfileDetails({
   id,
@@ -24,6 +30,7 @@ export default function ProfileDetails({
   const backendUrl = useContext(BackendUrlContext);
   const [currentUrl, setCurrentUrl] = useState("");
   const [posts, setPosts] = useState<PostItemProps[]>();
+  const { favourites, setFavourites } = useContext(FavouritesContext);
   const [meta, setMeta] = useState<MetaDataProps>();
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 12;
@@ -81,6 +88,90 @@ export default function ProfileDetails({
 
   const handleOnPageChange = (page: number) => {
     setCurrentPage(page);
+  };
+
+  const checkExistingFavourites = (modelId: number) => {
+    return (
+      favourites?.some((each: GalleryModelItemProps) => each?.id === modelId) ??
+      false
+    );
+  };
+
+  const getTargetFavouritesItem = (modelId: number) => {
+    return user?.favourites?.find(
+      (favourite) => favourite?.model?.id === modelId
+    );
+  };
+
+  const handleAddToFavourites = async (modelId: number) => {
+    if (!jwt) {
+      toast("Join us by signing in to save this muse to your favourite.");
+      return;
+    }
+
+    if (
+      user?.access === "free" &&
+      favourites?.length &&
+      favourites?.length > 4
+    ) {
+      toast(
+        "You've reached the 5-Muse limit on the Free plan! Upgrade now to add more Muses to your favourite."
+      );
+      return;
+    }
+
+    const email = user?.email;
+
+    if (!checkExistingFavourites(model?.id)) {
+      setFavourites([...favourites!, model]);
+      try {
+        await fetch(`${backendUrl}/api/favourites`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${jwt}`,
+          },
+          body: JSON.stringify({
+            data: {
+              email: email,
+              model: {
+                id: modelId,
+              },
+              user: {
+                id: user.id,
+              },
+            },
+          }),
+        });
+
+        toast("Nice pick! It's now in your favourite.");
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      toast("This Muse is already in your favourite.");
+    }
+  };
+
+  const handleRemoveFromFavourites = async (modelId: number) => {
+    if (!jwt) {
+      toast("Join us by signing in to remove this from your favourite.");
+      return;
+    }
+    if (favourites)
+      setFavourites(
+        favourites?.filter((e: GalleryModelItemProps) => e?.id !== modelId)
+      );
+    try {
+      await fetch("/api/favourite", {
+        method: "DELETE",
+        body: JSON.stringify({
+          documentId: getTargetFavouritesItem(modelId)?.documentId,
+        }),
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -150,8 +241,8 @@ export default function ProfileDetails({
                 </div>
               </div>
 
-              <div className="row">
-                <div className="col-lg-4 d-flex justify-content-center justify-content-lg-start">
+              <div className="row intro">
+                <div className="col-lg-3 d-flex justify-content-center justify-content-lg-start">
                   <div className="model-image ">
                     <img
                       src={model?.avatar?.url}
@@ -161,12 +252,28 @@ export default function ProfileDetails({
                     />
                   </div>
                 </div>
-                <div className="col-lg-8">
+                <div className="col-lg-2 d-flex justify-content-center mt-4">
+                  <a
+                    className="like"
+                    onClick={
+                      checkExistingFavourites(model?.id)
+                        ? () => handleRemoveFromFavourites(model?.id)
+                        : () => handleAddToFavourites(model?.id)
+                    }
+                  >
+                    {checkExistingFavourites(model?.id) ? (
+                      <i className="bi bi-heart-fill"></i>
+                    ) : (
+                      <i className="bi bi-heart"></i>
+                    )}
+                  </a>
+                </div>
+                <div className="col-lg-7">
                   <h2 className="project-title">{model?.name}</h2>
                   <div className="project-website">
                     <i className="bi bi-link-45deg"></i>
-                    <a href="#" target="_blank">
-                      {model?.youtube}
+                    <a href={model?.youtube} target="_blank">
+                      {model?.youtube?.substring(0, 20)}
                     </a>
                   </div>
                 </div>
