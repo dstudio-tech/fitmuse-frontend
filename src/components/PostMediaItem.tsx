@@ -5,12 +5,13 @@ import { toast } from "react-toastify";
 import { PostItemProps } from "@/data/props";
 import VideoWithLightbox from "./VideoWithLightbox";
 import CanvasImageWithGlightbox from "./CanvasImageWithGlightbox";
-import "./postMediaItem.css";
+import PostAdsItemCard from "./PostAdsItemCard";
 import {
   BackendUrlContext,
   CollectionsContext,
   UserContext,
 } from "./SessionProvider";
+import "./postMediaItem.css";
 
 export default function PostMediaItem({ item }: { item: PostItemProps }) {
   const backendUrl = useContext(BackendUrlContext);
@@ -145,7 +146,7 @@ export default function PostMediaItem({ item }: { item: PostItemProps }) {
             </div>
           </div>
         </div>
-      ) : (
+      ) : item.type === "video" ? (
         <div key={item.id} className="col-4 col-lg-2 col-md-3 col-sm-4">
           <div className="position-relative">
             <VideoWithLightbox
@@ -187,6 +188,8 @@ export default function PostMediaItem({ item }: { item: PostItemProps }) {
             </div>
           </div>
         </div>
+      ) : (
+        <PostAdsItemCard item={item} />
       )}
     </>
   );

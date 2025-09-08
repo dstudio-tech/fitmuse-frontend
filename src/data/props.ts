@@ -253,6 +253,8 @@ export interface PostItemProps {
   };
   model: GalleryModelItemProps;
   category: string;
+  isPremiumAds: boolean;
+  isUltimateAds: boolean;
 }
 
 export interface PricingItemProps {

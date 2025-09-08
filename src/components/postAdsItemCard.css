@@ -1,0 +1,95 @@
+.fm-card {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 9/16;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #000000;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  border: 2px solid rgba(0, 0, 0, 0.15);
+}
+
+.fm-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+.fm-media {
+  position: absolute;
+  border-radius: 8px;
+  overflow: hidden;
+  inset: 0;
+}
+
+.fm-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.fm-overlay {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 12px;
+  background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.15),
+      rgba(0, 0, 0, 0.35)
+    ),
+    rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.fm-btn {
+  padding: 7px 15px;
+  background-color: var(--accent-color);
+  color: var(--contrast-color) !important;
+  border-radius: 30px;
+  font-weight: 500;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+
+.fm-overlay-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px; /* space between avatar, name, button */
+  text-align: center;
+}
+
+.fm-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--accent-color);
+}
+
+
+.fm-btn:hover {
+  background-color: color-mix(in srgb, var(--accent-color), black 15%);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+.fm-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 3px 8px rgba(229, 157, 2, 0.35);
+}
+
+
+@media (max-width: 767.98px) {
+.fm-btn {
+  padding: 6px 10px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 400;
+}
+}
