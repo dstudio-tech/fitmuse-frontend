@@ -78,7 +78,7 @@ export default function MuseGallery() {
           <div className="row" data-aos="fade-up" data-aos-delay="200">
             <div className="gallery filter-wrapper">
               <form className="filter-form">
-                <div className="col-12 col-lg-5 form-group">
+                <div className="col-12 col-lg-3 form-group">
                   <div className="input-group filter-input-group">
                     <span className="input-group-text">
                       <i className="bi bi-collection"></i>
