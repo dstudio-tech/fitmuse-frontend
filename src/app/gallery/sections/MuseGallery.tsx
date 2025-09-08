@@ -25,7 +25,7 @@ export default function MuseGallery() {
       if (jwt && access === "ultimate") {
         try {
           const response = await fetch(
-            `${backendUrl}/api/articles?populate[model][populate][0]=avatar&populate=cover&pagination[page]=${page}&pagination[pageSize]=${pageSize}&filters[isActive][$eq]=true&filters[isPremiumAds][$eq]=false&filters[isUltimateAds][$eq]=false&sort[0]=views:desc`
+            `${backendUrl}/api/articles?populate[model][populate][0]=avatar&populate=cover&filters[isActive][$eq]=true&filters[type][$ne]=ads&pagination[page]=${page}&pagination[pageSize]=${pageSize}&sort[0]=views:desc`
           );
           const data = await response.json();
           setPosts(data.data);
@@ -36,7 +36,7 @@ export default function MuseGallery() {
       } else if (jwt && access === "premium") {
         try {
           const response = await fetch(
-            `${backendUrl}/api/articles?populate[model][populate][0]=avatar&populate=cover&filters[access][$ne]=ultimate&pagination[page]=${page}&pagination[pageSize]=${pageSize}&filters[isActive][$eq]=true&filters[isUltimateAds][$eq]=false&sort[0]=views:desc`
+            `${backendUrl}/api/articles?populate[model][populate][0]=avatar&populate=cover&filters[access][$ne]=ultimate&filters[isActive][$eq]=true&filters[isPremiumAds][$eq]=false&pagination[page]=${page}&pagination[pageSize]=${pageSize}&sort[0]=views:desc`
           );
           const data = await response.json();
           setPosts(data.data);
