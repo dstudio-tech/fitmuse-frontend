@@ -1,14 +1,14 @@
-'use client';
-import { useEffect } from 'react';
+"use client";
+import { useEffect } from "react";
 // import AOS
-import AOS from 'aos';
+import AOS from "aos";
 
 export default function InitAOS() {
   useEffect(() => {
     AOS.init({
       duration: 1000,
-      easing: 'ease-in-out',
-      once: false,
+      easing: "ease-in-out",
+      once: true,
       mirror: false,
     });
   }, []);
