@@ -1,5 +1,5 @@
 "use client";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import Link from "next/link";
 import CountUp from "react-countup";
 import { ReactTyped } from "react-typed";
@@ -10,10 +10,31 @@ import Preloader from "@/components/Preloader";
 import InitPopover from "@/components/InitPopover";
 import "./hero.css";
 
-// ✅ Keep what you need strongly typed (the API you call)
+// Setup Glightbox
+// What one slide looks like (enough for video)
+interface GLightboxElement {
+  href: string;
+  type: "video" | "inline" | "image";
+  source?: "local" | "youtube" | "vimeo";
+}
+
+// Options we actually use
+interface GlightboxOptions {
+  elements: GLightboxElement[];
+  skin?: "clean" | string;
+  autoplayVideos?: boolean;
+  openEffect?: "zoom" | "fade" | "none";
+  closeEffect?: "zoom" | "fade" | "none";
+  onOpen?: () => void;
+  onClose?: () => void;
+}
+
+// Keep your return API
 type LightboxAPI = { open: () => void; destroy: () => void };
-// ✅ Make ctor accept unknown so it's assignment-compatible with the lib
-type GlightboxCtor = (opts: unknown) => LightboxAPI;
+
+// Make the ctor accept our options (we’ll assign to it after dynamic import)
+type GlightboxCtor = (opts: GlightboxOptions) => LightboxAPI;
+
 let Glightbox: GlightboxCtor | null = null;
 
 export default function Hero() {
@@ -32,29 +53,51 @@ export default function Hero() {
   }, []);
 
   useEffect(() => {
-    // Dynamically import Glightbox only on client
-    import("glightbox").then((module) => {
-      Glightbox = module.default as unknown as GlightboxCtor;
+    import("glightbox").then((m) => {
+      Glightbox = (m.default ?? m) as unknown as GlightboxCtor;
     });
   }, []);
 
-  const handleVideoClick = (e: React.MouseEvent) => {
-    e.preventDefault(); // stop Link navigation
+  const handleVideoClick = async (e: React.MouseEvent) => {
+    e.preventDefault();
+
+    // if a user clicks before useEffect import finishes
+    if (!Glightbox) {
+      const m = await import("glightbox");
+      Glightbox = (m.default ?? m) as unknown as GlightboxCtor;
+    }
     if (!Glightbox) return;
 
-    Glightbox({
+    const lb = Glightbox({
       elements: [
         {
-          href: hero?.videoBtn?.link,
+          href: hero?.videoBtn?.link ?? "",
           type: "video",
-          source: "local", // or "youtube"/"vimeo" if external
+          source: "local", // "youtube" | "vimeo" if needed
         },
       ],
+      skin: "clean",
       autoplayVideos: true,
       openEffect: "zoom",
       closeEffect: "zoom",
-    }).open();
+      onOpen: () => {
+        // Tag only the live instance after DOM exists
+        requestAnimationFrame(() => {
+          document
+            .querySelector(".glightbox-container")
+            ?.setAttribute("data-fm-portrait", "true");
+        });
+      },
+      onClose: () => {
+        document
+          .querySelector(".glightbox-container")
+          ?.removeAttribute("data-fm-portrait");
+      },
+    });
+
+    lb.open();
   };
+
   return (
     <>
       {hero ? (

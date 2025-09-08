@@ -332,3 +332,67 @@
     margin-bottom: 30px;
   }
 }
+
+
+/*--------------------------------------------------------------
+# Glightbox Adjustment
+--------------------------------------------------------------*/
+/* Maximize a 9:16 portrait inside viewport */
+.glightbox-container[data-fm-portrait="true"] .gslide,
+.glightbox-container[data-fm-portrait="true"] .gslide-media {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;   /* kill hidden width clamps */
+  max-height: none !important;
+}
+
+.glightbox-container[data-fm-portrait="true"] .glightbox-clean .ginner-container {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  max-width: 100vw !important;
+  max-height: 100vh !important;
+}
+
+/* The portrait frame itself */
+.glightbox-container[data-fm-portrait="true"] .gvideo-container {
+  position: relative !important;
+  aspect-ratio: 9 / 16 !important;
+
+  /* Grow as large as possible while keeping portrait: min(90vw, 90vh * 9/16) */
+  width: min(90vw, calc(90vh * 9 / 16)) !important;
+  height: auto !important;        /* aspect-ratio calculates the height */
+  max-height: 90vh !important;
+  background: #000 !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+}
+
+/* Make the media actually fill that box */
+.glightbox-container[data-fm-portrait="true"] .gvideo-container video,
+.glightbox-container[data-fm-portrait="true"] .gvideo-container iframe {
+  position: absolute !important;
+  inset: 0 !important;
+  width: fit-content !important;
+  height: 100% !important;
+  object-fit: cover !important;   /* fill and crop elegantly */
+  display: block !important;
+}
+
+/* Optional: if an inner wrapper is injected, nuke padding/constraints */
+.glightbox-container[data-fm-portrait="true"] .gvideo,
+.glightbox-container[data-fm-portrait="true"] .gslide-media .plyr__video-embed {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  max-height: none !important;
+  padding: 0 !important;
+}
+
+/* 4) Optional: match poster/ads/overlay to the new sizing too */
+.glightbox-container[data-fm-portrait="true"] .plyr--video
+ {
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+}
