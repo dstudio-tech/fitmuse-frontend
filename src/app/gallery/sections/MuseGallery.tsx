@@ -11,6 +11,7 @@ export default function MuseGallery() {
   const { user, jwt } = useContext(UserContext);
   const backendUrl = useContext(BackendUrlContext);
   const [posts, setPosts] = useState<PostItemProps[]>();
+  const [filter, setFilter] = useState("views");
   const [meta, setMeta] = useState<MetaDataProps>();
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 12;
@@ -25,7 +26,7 @@ export default function MuseGallery() {
       if (jwt && access === "ultimate") {
         try {
           const response = await fetch(
-            `${backendUrl}/api/articles?populate[model][populate][0]=avatar&populate=cover&filters[isActive][$eq]=true&filters[type][$ne]=ads&pagination[page]=${page}&pagination[pageSize]=${pageSize}&sort[0]=views:desc`
+            `${backendUrl}/api/articles?populate[model][populate][0]=avatar&populate=cover&filters[isActive][$eq]=true&filters[type][$ne]=ads&pagination[page]=${page}&pagination[pageSize]=${pageSize}&sort[0]=${filter}:desc`
           );
           const data = await response.json();
           setPosts(data.data);
@@ -36,7 +37,7 @@ export default function MuseGallery() {
       } else if (jwt && access === "premium") {
         try {
           const response = await fetch(
-            `${backendUrl}/api/articles?populate[model][populate][0]=avatar&populate=cover&filters[access][$ne]=ultimate&filters[isActive][$eq]=true&filters[isPremiumAds][$eq]=false&pagination[page]=${page}&pagination[pageSize]=${pageSize}&sort[0]=views:desc`
+            `${backendUrl}/api/articles?populate[model][populate][0]=avatar&populate=cover&filters[access][$ne]=ultimate&filters[isActive][$eq]=true&filters[isPremiumAds][$eq]=false&pagination[page]=${page}&pagination[pageSize]=${pageSize}&sort[0]=${filter}:desc`
           );
           const data = await response.json();
           setPosts(data.data);
@@ -47,7 +48,7 @@ export default function MuseGallery() {
       } else {
         try {
           const response = await fetch(
-            `${backendUrl}/api/articles?populate[model][populate][0]=avatar&populate=cover&filters[access][$eq]=free&pagination[page]=${page}&pagination[pageSize]=${pageSize}&filters[isActive][$eq]=true&sort[0]=views:desc`
+            `${backendUrl}/api/articles?populate[model][populate][0]=avatar&populate=cover&filters[access][$eq]=free&pagination[page]=${page}&pagination[pageSize]=${pageSize}&filters[isActive][$eq]=true&sort[0]=${filter}:desc`
           );
           const data = await response.json();
           setPosts(data.data);
@@ -59,23 +60,54 @@ export default function MuseGallery() {
     };
 
     getPostItemsByAccess(user?.access || "free", currentPage, pageSize);
-  }, [user, currentPage, pageSize, backendUrl, jwt]);
+  }, [user, currentPage, pageSize, backendUrl, jwt, filter]);
 
   const handleOnPageChange = (page: number) => {
     setCurrentPage(page);
   };
+
+  const handleFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const { value } = e.target;
+    setFilter(value);
+  };
+
   return (
     <section id="muse-gallery" className="muse-gallery-section section">
       <div className="container" data-aos="fade-up">
-        <div className="g-4" data-aos="fade-up" data-aos-delay="300">
-          <div className="row g-3 mt-3">
+        <div className="g-4">
+          <div className="row" data-aos="fade-up" data-aos-delay="200">
+            <div className="gallery filter-wrapper">
+              <form className="filter-form">
+                <div className="col-12 col-lg-5 form-group">
+                  <div className="input-group filter-input-group">
+                    <span className="input-group-text">
+                      <i className="bi bi-collection"></i>
+                    </span>
+                    <select
+                      name="filter"
+                      className="form-control filter-select"
+                      value={filter}
+                      onChange={handleFilterChange}
+                      aria-label="Order gallery by"
+                    >
+                      <option value="views">Most Popular</option>
+                      <option value="createdAt">Most Recent</option>
+                      <option value="isPremiumAds">Premium Gallery</option>
+                      <option value="isUltimateAds">Ultimate Gallery</option>
+                    </select>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div className="row g-3 mt-3" data-aos="fade-up" data-aos-delay="300">
             {posts && posts.length > 0 ? (
               posts?.map((post) => <PostMediaItem key={post.id} item={post} />)
             ) : (
               <Preloader />
             )}
           </div>
-          <div className="row mt-5">
+          <div className="row mt-5" data-aos="fade-up" data-aos-delay="400">
             <div className="col-lg-12 d-flex justify-content-center">
               {posts && posts.length > 0 && (
                 <Pagination

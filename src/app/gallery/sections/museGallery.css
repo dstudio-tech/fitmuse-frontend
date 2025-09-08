@@ -1,0 +1,58 @@
+.gallery .filter-input-group .input-group-text {
+  color: var(--accent-color);
+  background-color: var(--surface-color);
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 85%);
+  border-radius: 8px 0 0 8px;
+  padding: 12px 15px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Select element — dark background + contrast text */
+.gallery .filter-input-group .form-control.filter-select {
+  background-color: var(--surface-color); /* dark bg */
+  color: var(--contrast-color);           /* readable text */
+  border: 1px solid color-mix(in srgb, var(--default-color), transparent 85%);
+  border-radius: 0 8px 8px 0;
+  box-shadow: none;
+  font-size: 14px;
+  padding: 12px 44px 12px 15px; /* right padding for caret */
+  height: 50px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Selected value inside the select box → accent color */
+.gallery .filter-input-group .form-control.filter-select option:checked,
+.gallery .filter-input-group .form-control.filter-select option[selected] {
+  color: var(--accent-color) !important;
+}
+
+/* Focus state with accent highlight */
+.gallery .filter-input-group .form-control.filter-select:focus {
+  border-color: var(--accent-color);
+  outline: none;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-color), transparent 85%);
+}
+
+/* Custom caret in accent color */
+.gallery .filter-input-group select.form-control.filter-select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23e59d02' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 16px 12px;
+  padding-right: 40px;
+}
+
+/* Dropdown options also dark */
+.gallery .filter-input-group .form-control.filter-select option {
+  background: var(--surface-color);
+  color: var(--contrast-color);
+}
+
+/* Hover border accent */
+.gallery .filter-input-group .form-control.filter-select:hover {
+  border-color: color-mix(in srgb, var(--accent-color), transparent 40%);
+}
