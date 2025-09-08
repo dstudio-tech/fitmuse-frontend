@@ -50,7 +50,7 @@ export default function ProfileDetails({
       if (jwt && access === "ultimate") {
         try {
           const response = await fetch(
-            `${backendUrl}/api/articles?populate[model][populate][0]=avatar&populate=cover&filters[isActive][$eq]=true&filters[type][$ne]=ads&pagination[page]=${page}&pagination[pageSize]=${pageSize}&sort[0]=views:desc`
+            `${backendUrl}/api/articles?populate[model][populate][0]=avatar&populate=cover&filters[model][documentId][$eq]=${id}&filters[isActive][$eq]=true&filters[type][$ne]=ads&pagination[page]=${page}&pagination[pageSize]=${pageSize}&sort[0]=publishedAt:desc`
           );
           const data = await response.json();
           setPosts(data.data);
@@ -61,7 +61,7 @@ export default function ProfileDetails({
       } else if (jwt && access === "premium") {
         try {
           const response = await fetch(
-            `${backendUrl}/api/articles?populate[model][populate][0]=avatar&populate=cover&filters[access][$ne]=ultimate&filters[isActive][$eq]=true&filters[isPremiumAds][$eq]=false&pagination[page]=${page}&pagination[pageSize]=${pageSize}&sort[0]=views:desc`
+            `${backendUrl}/api/articles?populate[model][populate][0]=avatar&populate=cover&filters[access][$ne]=ultimate&filters[isActive][$eq]=true&filters[isPremiumAds][$eq]=false&filters[model][documentId][$eq]=${id}&pagination[page]=${page}&pagination[pageSize]=${pageSize}&filters[isActive][$eq]=true&sort[0]=publishedAt:desc`
           );
           const data = await response.json();
           setPosts(data.data);
