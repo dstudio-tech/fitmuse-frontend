@@ -373,7 +373,7 @@
 .glightbox-container[data-fm-portrait="true"] .gvideo-container iframe {
   position: absolute !important;
   inset: 0 !important;
-  width: fit-content !important;
+  width: 100% !important;
   height: 100% !important;
   object-fit: cover !important;   /* fill and crop elegantly */
   display: block !important;
