@@ -31,10 +31,11 @@
 
 .fm-overlay {
   position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  padding: 12px;
+  inset: -1px;                 /* overextend by 1px to kill any gaps */
+  border-radius: inherit;      /* match the card’s rounding */
+  z-index: 2;
+
+  /* Opaque base + blur + subtle gradient on top */
   background: linear-gradient(
       to bottom,
       rgba(0, 0, 0, 0.15),
@@ -43,17 +44,12 @@
     rgba(0, 0, 0, 0.15);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.fm-btn {
-  padding: 7px 15px;
-  background-color: var(--accent-color);
-  color: var(--contrast-color) !important;
-  border-radius: 30px;
-  font-weight: 500;
-  font-size: 0.9rem;
-  transition: all 0.3s ease;
-}
 
 
 .fm-overlay-content {
@@ -70,6 +66,28 @@
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid var(--accent-color);
+}
+
+.fm-name {
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.fm-name:hover {
+  color: var(--accent-color);
+}
+
+.fm-btn {
+  padding: 7px 15px;
+  background-color: var(--accent-color);
+  color: var(--contrast-color) !important;
+  border-radius: 30px;
+  font-weight: 500;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
 }
 
 

@@ -67,9 +67,12 @@ export default function PostAdsItemCard({ item }: { item: PostItemProps }) {
                     className="fm-avatar"
                   />
                 )}
-                <span className="fm-name">
+                <Link
+                  href={`/muse/${item?.model?.documentId}`}
+                  className="fm-name"
+                >
                   {item.model?.name || item.title}
-                </span>
+                </Link>
 
                 <Link href="/pricing" type="button" className="fm-btn">
                   {item?.isPremiumAds && "Premium"}
