@@ -11,7 +11,7 @@ export default function MuseGallery() {
   const { user, jwt } = useContext(UserContext);
   const backendUrl = useContext(BackendUrlContext);
   const [posts, setPosts] = useState<PostItemProps[]>();
-  const [filter, setFilter] = useState("views");
+  const [filter, setFilter] = useState("createdAt");
   const [meta, setMeta] = useState<MetaDataProps>();
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 12;
@@ -69,6 +69,7 @@ export default function MuseGallery() {
   const handleFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { value } = e.target;
     setFilter(value);
+    setCurrentPage(1);
   };
 
   return (
@@ -90,8 +91,8 @@ export default function MuseGallery() {
                       onChange={handleFilterChange}
                       aria-label="Order gallery by"
                     >
-                      <option value="views">Most Popular</option>
                       <option value="createdAt">Most Recent</option>
+                      <option value="views">Most Views</option>
                       <option value="isPremiumAds">Premium Gallery</option>
                       <option value="isUltimateAds">Ultimate Gallery</option>
                     </select>
