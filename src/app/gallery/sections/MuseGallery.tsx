@@ -14,7 +14,17 @@ export default function MuseGallery() {
   const [filter, setFilter] = useState("createdAt");
   const [meta, setMeta] = useState<MetaDataProps>();
   const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 18;
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkScreen = () => setIsMobile(window.innerWidth < 768); // "md" breakpoint
+    checkScreen();
+    window.addEventListener("resize", checkScreen);
+    return () => window.removeEventListener("resize", checkScreen);
+  }, []);
+
+  // conditionally set pageSize based on screen size
+  const pageSize = isMobile ? 12 : 18;
 
   useEffect(() => {
     // access post media based on user access level
