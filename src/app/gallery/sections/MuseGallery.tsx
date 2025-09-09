@@ -14,7 +14,7 @@ export default function MuseGallery() {
   const [filter, setFilter] = useState("createdAt");
   const [meta, setMeta] = useState<MetaDataProps>();
   const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 12;
+  const pageSize = 18;
 
   useEffect(() => {
     // access post media based on user access level
