@@ -15,6 +15,7 @@ export default function MuseGallery() {
   const [meta, setMeta] = useState<MetaDataProps>();
   const [currentPage, setCurrentPage] = useState(1);
   const [isMobile, setIsMobile] = useState(false);
+  const [pageSize, setPageSize] = useState(12);
 
   useEffect(() => {
     const checkScreen = () => setIsMobile(window.innerWidth < 768); // "md" breakpoint
@@ -24,7 +25,9 @@ export default function MuseGallery() {
   }, []);
 
   // conditionally set pageSize based on screen size
-  const pageSize = isMobile ? 12 : 18;
+  useEffect(() => {
+    isMobile ? setPageSize(12) : setPageSize(18);
+  }, [isMobile]);
 
   useEffect(() => {
     // access post media based on user access level
