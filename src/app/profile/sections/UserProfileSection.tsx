@@ -338,7 +338,7 @@ export default function UserProfileSection({
                     <div className="contact-info">
                       <div className="contact-item">
                         <i className="bi bi-envelope"></i>
-                        <span>info@example.com</span>
+                        <span>info@fitmuse.club</span>
                       </div>
                       <div className="contact-item">
                         <i className="bi bi-youtube"></i>

@@ -54,7 +54,7 @@ export default function Gallery({
     fetch(
       `${backendUrl}/api/authors?populate[0]=style&populate[1]=avatar&populate[2]=thumbnail${
         style ? `&filters[style][slug]=${style}` : ""
-      }&pagination[page]=${page}&pagination[pageSize]=${pageSize}&filters[isActive][$eq]=true&sort[0]=publishedAt:desc`
+      }&pagination[page]=${page}&pagination[pageSize]=${pageSize}&filters[isActive][$eq]=true&sort[0]=createdAt:desc`
     )
       .then((res) => res.json())
       .then((data) => {
