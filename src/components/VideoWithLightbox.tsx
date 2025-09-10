@@ -42,7 +42,7 @@ function drawWatermark(
   )}px system-ui,-apple-system, Segoe UI, Roboto, Arial`;
   ctx.textBaseline = "bottom";
 
-  const m = ctx.measureText(text);
+  const m = ctx.measureText("©fitmuse");
   const boxW = m.width + padX * 2;
   const boxH = Math.max(Math.round(ch * 0.04), 28);
   const x = Math.round((cw - boxW) / 2);
@@ -53,8 +53,8 @@ function drawWatermark(
     text.includes("free")
       ? "rgba(0,0,0,0.55)"
       : text.includes("premium")
-      ? "rgba(229, 157, 2,0.55)"
-      : "rgba(229, 157, 2)"
+      ? "rgba(229, 157, 2,0.65)"
+      : "rgba(229, 93, 2, 0.65)"
   }`;
   const r = 10;
   ctx.beginPath();
@@ -68,7 +68,7 @@ function drawWatermark(
 
   // text
   ctx.fillStyle = "#fff";
-  ctx.fillText(text, x + padX, y + boxH - padY);
+  ctx.fillText("©fitmuse", x + padX, y + boxH - padY);
   ctx.restore();
 }
 
@@ -116,7 +116,7 @@ export default function VideoWithLightbox({
   videoUrl,
   className,
   documentId,
-  watermarkText = "fitmuse",
+  watermarkText = "©fitmuse",
 }: VideoLightboxProps) {
   // Visible preview canvas; decoding uses an off-DOM <video>
   const previewCanvasRef = useRef<HTMLCanvasElement>(null);
