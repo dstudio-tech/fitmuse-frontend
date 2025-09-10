@@ -49,7 +49,13 @@ function drawWatermark(
   const y = ch - boxH - margin;
 
   // background rounded rect
-  ctx.fillStyle = "rgba(0,0,0,0.55)";
+  ctx.fillStyle = `${
+    text.includes("free")
+      ? "rgba(0,0,0,0.55)"
+      : text.includes("premium")
+      ? "rgba(229, 157, 2,0.55)"
+      : "rgba(229, 157, 2)"
+  }`;
   const r = 10;
   ctx.beginPath();
   ctx.moveTo(x + r, y);

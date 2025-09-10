@@ -153,6 +153,7 @@ export default function PostMediaItem({ item }: { item: PostItemProps }) {
               videoUrl={item?.cover?.url}
               className="demo glightbox"
               documentId={item?.documentId}
+              watermarkText={`&copy;fitmuse ${item?.access}`}
             />
             {/* Bottom overlay bar */}
             <div className="bottom-bar d-flex align-items-center justify-content-between px-1 py-1">

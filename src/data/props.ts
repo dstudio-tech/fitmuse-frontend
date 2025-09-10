@@ -240,6 +240,8 @@ export interface PostItemProps {
   updatedAt: string;
   publishedAt: string;
   type: string;
+  access: string;
+  views: number;
   cover: {
     id: number;
     documentId: string;
