@@ -14,27 +14,14 @@ export default function MuseGallery() {
   const [filter, setFilter] = useState("createdAt");
   const [meta, setMeta] = useState<MetaDataProps>();
   const [currentPage, setCurrentPage] = useState(1);
-  const [isMobile, setIsMobile] = useState(false);
-  const [pageSize, setPageSize] = useState(12);
-
-  useEffect(() => {
-    const checkScreen = () => setIsMobile(window.innerWidth < 768); // "md" breakpoint
-    checkScreen();
-    window.addEventListener("resize", checkScreen);
-    return () => window.removeEventListener("resize", checkScreen);
-  }, []);
-
-  // conditionally set pageSize based on screen size
-  useEffect(() => {
-    isMobile ? setPageSize(12) : setPageSize(18);
-  }, [isMobile]);
+  const [pageSize, setPageSize] = useState("12");
 
   useEffect(() => {
     // access post media based on user access level
     const getPostItemsByAccess = async (
       access: string = "free",
       page: number,
-      pageSize: number
+      pageSize: string
     ) => {
       if (jwt && access === "ultimate") {
         try {
@@ -85,6 +72,12 @@ export default function MuseGallery() {
     setCurrentPage(1);
   };
 
+  const handlePageSizeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const { value } = e.target;
+    setPageSize(value);
+    setCurrentPage(1);
+  };
+
   return (
     <section id="muse-gallery" className="muse-gallery-section section">
       <div className="container" data-aos="fade-up">
@@ -92,23 +85,44 @@ export default function MuseGallery() {
           <div className="row" data-aos="fade-up" data-aos-delay="200">
             <div className="gallery filter-wrapper">
               <form className="filter-form">
-                <div className="col-12 col-lg-3 form-group">
-                  <div className="input-group filter-input-group">
-                    <span className="input-group-text">
-                      <i className="bi bi-collection"></i>
-                    </span>
-                    <select
-                      name="filter"
-                      className="form-control filter-select"
-                      value={filter}
-                      onChange={handleFilterChange}
-                      aria-label="Order gallery by"
-                    >
-                      <option value="createdAt">Most Recent</option>
-                      <option value="views">Most Views</option>
-                      <option value="isPremiumAds">Premium Gallery</option>
-                      <option value="isUltimateAds">Ultimate Gallery</option>
-                    </select>
+                <div className="row g-2 d-flex justify-content-between">
+                  <div className="col-12 col-lg-3 form-group">
+                    <div className="input-group filter-input-group">
+                      <span className="input-group-text">
+                        <i className="bi bi-collection"></i>
+                      </span>
+                      <select
+                        name="filter"
+                        className="form-control filter-select"
+                        value={filter}
+                        onChange={handleFilterChange}
+                        aria-label="Order gallery by"
+                      >
+                        <option value="createdAt">Most Recent</option>
+                        <option value="views">Most Views</option>
+                        <option value="isPremiumAds">Premium Gallery</option>
+                        <option value="isUltimateAds">Ultimate Gallery</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div className="col-12 col-lg-2 form-group">
+                    <div className="input-group filter-input-group">
+                      <select
+                        name="pageSize"
+                        className="form-control filter-select"
+                        value={pageSize}
+                        onChange={handlePageSizeChange}
+                        aria-label="Items perpage"
+                      >
+                        <option value="6">Unveil 6 / page</option>
+                        <option value="12">Unveil 12 / page</option>
+                        <option value="18">Unveil 18 / page</option>
+                        <option value="24">Unveil 24 / page</option>
+                      </select>
+                      <span className="input-group-text">
+                        <i className="bi bi-grid-3x3-gap"></i>
+                      </span>
+                    </div>
                   </div>
                 </div>
               </form>

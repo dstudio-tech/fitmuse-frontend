@@ -213,7 +213,7 @@ export interface GalleryModelItemProps {
 export interface MetaDataProps {
   pagination: {
     page: number;
-    pageSize: number;
+    pageSize: string;
     pageCount: number;
     total: number;
   };

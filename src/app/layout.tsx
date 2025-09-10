@@ -60,9 +60,9 @@ export const metadata: Metadata = {
     siteName: "FitMuse",
     images: [
       {
-        url: "https://www.fitmuse.club/og-image.jpg",
-        width: 1200,
-        height: 630,
+        url: "https://www.fitmuse.club/logo.png",
+        width: 600,
+        height: 600,
         alt: "FitMuse - Fitness Meets Allure",
       },
     ],
@@ -74,7 +74,7 @@ export const metadata: Metadata = {
     title: "FitMuse - Where Beauty Meets Strength",
     description:
       "Watch irresistible workout shorts, explore stunning portfolios, and unlock exclusive galleries crafted to inspire and captivate.",
-    images: ["https://www.fitmuse.club/og-image.jpg"],
+    images: ["https://www.fitmuse.club/logo.png"],
   },
   icons: {
     icon: "/favicon.png",

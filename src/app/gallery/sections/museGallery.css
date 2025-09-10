@@ -2,7 +2,7 @@
   color: var(--accent-color);
   background-color: var(--surface-color);
   border: 1px solid color-mix(in srgb, var(--default-color), transparent 85%);
-  border-radius: 8px 0 0 8px;
+  border-radius: 8px;
   padding: 12px 15px;
   display: inline-flex;
   align-items: center;
@@ -14,7 +14,7 @@
   background-color: var(--surface-color); /* dark bg */
   color: var(--contrast-color);           /* readable text */
   border: 1px solid color-mix(in srgb, var(--default-color), transparent 85%);
-  border-radius: 0 8px 8px 0;
+  border-radius: 8px;
   box-shadow: none;
   font-size: 14px;
   padding: 12px 44px 12px 15px; /* right padding for caret */
