@@ -53,8 +53,8 @@ function drawWatermark(
     text.includes("free")
       ? "rgba(0,0,0,0.55)"
       : text.includes("premium")
-      ? "rgba(229, 157, 2,0.65)"
-      : "rgba(229, 93, 2, 0.65)"
+      ? "rgba(229,157,2,0.65)"
+      : "rgba(229,44,2,0.65)"
   }`;
   const r = 10;
   ctx.beginPath();
