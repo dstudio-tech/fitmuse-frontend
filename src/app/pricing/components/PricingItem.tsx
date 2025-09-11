@@ -20,16 +20,22 @@ export default function PricingItem({
     >
       <div className={`pricing-card ${item?.popular ? "popular" : undefined}`}>
         {item?.popular && <div className="popular-tag">Most Popular</div>}
-        {isYearly && item.name !== "Free Plan" && (
+        {isYearly && item?.name !== "Free Plan" && (
           <div className="discount-tag">{item?.discount}% OFF</div>
         )}
         <div className="plan-header">
           <div className="plan-icon">
             <Link href={item?.videoLink?.link || "#"}>
-              <i className="bi bi-play-circle"></i>
+              {item?.name === "Free Plan" ? (
+                <i className="bi-stars"></i>
+              ) : item?.name === "Premium Plan" ? (
+                <i className="bi-award"></i>
+              ) : (
+                <i className="bi-trophy"></i>
+              )}
             </Link>
           </div>
-          <h3>{item.name}</h3>
+          <h3>{item?.name}</h3>
           <p>{item?.description}</p>
         </div>
         <div className="d-flex justify-content-center align-items-center my-3">
@@ -58,7 +64,7 @@ export default function PricingItem({
         <div className="plan-features">
           <ul>
             {item?.pricingItem.map((item) => (
-              <li key={item.id}>
+              <li key={item?.id}>
                 {!item.included ? (
                   <i className="i bi-x-circle-fill"></i>
                 ) : (
