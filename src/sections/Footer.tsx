@@ -25,7 +25,11 @@ export default async function Footer() {
               <p>{footerData?.about}</p>
               <div className="social-links d-flex mt-4">
                 {footerData?.socials?.map((item: SocialItemProps) => (
-                  <a key={item.id} href="">
+                  <a
+                    target="_blank"
+                    key={item?.id}
+                    href={item?.sci?.link || "#"}
+                  >
                     <i className={item?.sci?.icon}></i>
                   </a>
                 ))}

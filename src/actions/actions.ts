@@ -145,7 +145,7 @@ export const fetchServiceByPriceId = async (priceId: string) => {
 export const fetchSocialsData = async () => {
   try {
     const response = await fetch(
-      `${process.env.BACKEND_URL}/api/socials?populate=*`
+      `${process.env.BACKEND_URL}/api/socials?populate=*&sort[0]=createdAt:asc`
     );
     const data = await response.json();
     return data?.data;

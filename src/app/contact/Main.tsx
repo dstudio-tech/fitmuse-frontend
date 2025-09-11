@@ -40,8 +40,9 @@ export default async function Main() {
                     <div className="social-icons">
                       {socialsData?.map((item: SocialItemProps) => (
                         <a
+                          target="_blank"
                           key={item?.sci?.id}
-                          href={item?.sci?.link}
+                          href={item?.sci?.link || "#"}
                           className="social-icon"
                         >
                           <i className={item?.sci?.icon}></i>
