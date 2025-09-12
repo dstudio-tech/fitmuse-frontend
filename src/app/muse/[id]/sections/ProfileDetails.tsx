@@ -273,7 +273,7 @@ export default function ProfileDetails({
                   <div className="project-website">
                     <i className="bi bi-link-45deg"></i>
                     <a href={model?.youtube} target="_blank">
-                      {model?.youtube?.substring(0, 20)}
+                      {model?.youtube?.substring(0, 23)}
                     </a>
                   </div>
                 </div>
