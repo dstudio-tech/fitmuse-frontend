@@ -60,14 +60,7 @@ export default function SessionProvider({
   const getMeData = async (jwt: string) => {
     try {
       const response = await fetch(
-        `${backendUrl}/api/users/me?populate[sale][populate][service]=true
-        &populate[collections][filters][publishedAt][$notNull]=true
-        &populate[collections][sort][0]=createdAt:desc
-        &populate[collections][populate][post_item][populate][cover]=true
-        &populate[collections][populate][post_item][populate][model][populate][avatar]=true
-        &populate[favourites][filters][publishedAt][$notNull]=true
-        &populate[favourites][sort][0]=createdAt:desc
-        &populate[favourites][populate][model][populate][thumbnail]=true`,
+        `${backendUrl}/api/users/me?populate[sale][populate][service]=true&populate[collections][filters][publishedAt][$notNull]=true&populate[collections][sort][0]=createdAt:desc&populate[collections][populate][post_item][populate][cover]=true&populate[collections][populate][post_item][populate][model][populate][avatar]=true&populate[favourites][filters][publishedAt][$notNull]=true&populate[favourites][sort][0]=createdAt:desc&populate[favourites][populate][model][populate][thumbnail]=true`,
         {
           method: "GET",
           headers: {
