@@ -1,6 +1,7 @@
 "use client";
 import React, { useContext, useEffect, useState } from "react";
 import Link from "next/link";
+import { toast } from "react-toastify";
 import {
   BackendUrlContext,
   FavouritesContext,
@@ -17,7 +18,6 @@ import Preloader from "@/components/Preloader";
 import PostMediaItem from "@/components/PostMediaItem";
 import ShareSci from "@/components/ShareSci";
 import "./profileDetails.css";
-import { toast } from "react-toastify";
 
 export default function ProfileDetails({
   id,
@@ -272,8 +272,8 @@ export default function ProfileDetails({
                   <h2 className="project-title">{model?.name}</h2>
                   <div className="project-website">
                     <i className="bi bi-link-45deg"></i>
-                    <a href={model?.youtube} target="_blank">
-                      {model?.youtube?.substring(0, 23)}
+                    <a href={model?.patreon} target="_blank">
+                      {model?.patreon?.substring(0, 23)}
                     </a>
                   </div>
                 </div>

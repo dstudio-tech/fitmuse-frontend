@@ -184,6 +184,7 @@ export interface GalleryModelItemProps {
   updatedAt: string;
   publishedAt: string;
   youtube: string;
+  patreon: string;
   dob: string;
   slug: string;
   role: string;
