@@ -209,6 +209,7 @@ export interface GalleryModelItemProps {
   coverSlides: ModelCoverSlideProps[];
   tags: GalleryModelTagProps[];
   hook: string;
+  postItems: PostItemProps[];
 }
 
 export interface MetaDataProps {

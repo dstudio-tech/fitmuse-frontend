@@ -51,11 +51,10 @@ export default function Gallery({
     page?: number,
     pageSize?: number
   ) => {
-    fetch(
-      `${backendUrl}/api/authors?populate[0]=style&populate[1]=avatar&populate[2]=thumbnail${
-        style ? `&filters[style][slug]=${style}` : ""
-      }&pagination[page]=${page}&pagination[pageSize]=${pageSize}&filters[isActive][$eq]=true&sort[0]=createdAt:desc`
-    )
+    const query = `api/authors?populate[style]=true&populate[avatar]=true&populate[thumbnail]=true${
+      style ? `&filters[style][slug][$eq]=${style}` : ""
+    }&populate[postItems][filters][type][$ne]=ads&populate[postItems][sort][0]=publishedAt:desc&pagination[page]=${page}&pagination[pageSize]=${pageSize}&sort[0]=createdAt:desc`;
+    fetch(`${backendUrl}/${query}`)
       .then((res) => res.json())
       .then((data) => {
         setItems(data.data);

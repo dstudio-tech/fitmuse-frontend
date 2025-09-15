@@ -217,7 +217,9 @@ export default function GalleryModelItem({
             )}
             <div className="entry-overlay">
               <div className="overlay-content">
-                <div className="entry-meta">{model?.name}</div>
+                <div className="entry-meta">
+                  {model?.name} ({model?.postItems?.length})
+                </div>
                 <h3 className="entry-title">{model?.role}</h3>
                 <div className="entry-links">
                   {blobUrl && (
