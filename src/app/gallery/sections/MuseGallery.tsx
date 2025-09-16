@@ -111,7 +111,9 @@ export default function MuseGallery() {
                         </option>
                         <option
                           value={
-                            !user.access || user?.access === "free"
+                            !user.access ||
+                            user?.access === "free" ||
+                            user?.access === "premium"
                               ? "isUltimateAds"
                               : "access"
                           }
