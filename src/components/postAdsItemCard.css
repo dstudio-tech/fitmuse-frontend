@@ -68,6 +68,10 @@
   border: 2px solid var(--accent-color);
 }
 
+.fm-avatar.ultimate {
+   border: 2px solid #f34500;
+}
+
 .fm-name {
   color: #fff;
   font-size: 0.95rem;
@@ -90,11 +94,22 @@
   transition: all 0.3s ease;
 }
 
+.fm-btn.premium {
+background-color: var(--accent-color);
+}
+
+.fm-btn.ultimate {
+  background-color: #f34500;
+}
 
 .fm-btn:hover {
   background-color: color-mix(in srgb, var(--accent-color), black 15%);
   transform: translateY(-3px);
   box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+.fm-btn.ultimate:hover{
+   background-color: color-mix(in srgb, #f34500, black 15%);
 }
 
 .fm-btn:active {

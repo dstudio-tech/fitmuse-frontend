@@ -64,7 +64,9 @@ export default function PostAdsItemCard({ item }: { item: PostItemProps }) {
                   <img
                     src={item?.model?.avatar?.url}
                     alt={item.model?.name || item.title}
-                    className="fm-avatar"
+                    className={`fm-avatar ${
+                      item?.isPremiumAds ? "premium" : "ultimate"
+                    }`}
                   />
                 )}
                 <Link
@@ -74,7 +76,13 @@ export default function PostAdsItemCard({ item }: { item: PostItemProps }) {
                   {item.model?.name || item.title}
                 </Link>
 
-                <Link href="/pricing" type="button" className="fm-btn">
+                <Link
+                  href="/pricing"
+                  type="button"
+                  className={`fm-btn ${
+                    item?.isPremiumAds ? "premium" : "ultimate"
+                  }`}
+                >
                   {item?.isPremiumAds && "Premium"}
                   {item?.isUltimateAds && "Ultimate"}
                 </Link>
