@@ -100,8 +100,24 @@ export default function MuseGallery() {
                       >
                         <option value="createdAt">Most Recent</option>
                         <option value="views">Most Views</option>
-                        <option value="isPremiumAds">Premium Gallery</option>
-                        <option value="isUltimateAds">Ultimate Gallery</option>
+                        <option
+                          value={
+                            !user.access || user?.access === "free"
+                              ? "isPremiumAds"
+                              : "access"
+                          }
+                        >
+                          Premium Gallery
+                        </option>
+                        <option
+                          value={
+                            !user.access || user?.access === "free"
+                              ? "isUltimateAds"
+                              : "access"
+                          }
+                        >
+                          Ultimate Gallery
+                        </option>
                       </select>
                     </div>
                   </div>
