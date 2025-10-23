@@ -80,13 +80,19 @@ export default function SessionProvider({
 
       if (result?.access === "free") {
         currentUserCollections = result?.collections
-          ?.map((collection: UserCollectionItemProps) => collection.post_item)
-          ?.filters((item: PostItemProps) => item.access === "free");
+          ?.filters(
+            (collection: UserCollectionItemProps) =>
+              collection?.post_item?.access === "free"
+          )
+          ?.map((collection: UserCollectionItemProps) => collection.post_item);
       }
       if (result?.access === "premium") {
         currentUserCollections = result?.collections
-          ?.map((collection: UserCollectionItemProps) => collection.post_item)
-          ?.filters((item: PostItemProps) => item.access !== "ultimate");
+          ?.filters(
+            (collection: UserCollectionItemProps) =>
+              collection?.post_item?.access !== "ultimate"
+          )
+          ?.map((collection: UserCollectionItemProps) => collection.post_item);
       }
       if (result?.access === "ultimate") {
         currentUserCollections = result?.collections?.map(
