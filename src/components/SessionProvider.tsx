@@ -71,11 +71,12 @@ export default function SessionProvider({
       );
       const result = await response.json();
       setUser(result);
-      const currentUserCollections = result?.collections
-        ?.map((collection: UserCollectionItemProps) => {
+      // set user collections
+      const currentUserCollections = result?.collections?.map(
+        (collection: UserCollectionItemProps) => {
           return collection.post_item;
-        })
-        .filters((item: PostItemProps) => item.access === result.access);
+        }
+      );
       if (result.access === "free") {
         setCollections(
           currentUserCollections.filters(
@@ -83,7 +84,7 @@ export default function SessionProvider({
           )
         );
       }
-      if (result.access == "premium") {
+      if (result.access === "premium") {
         setCollections(
           currentUserCollections.filters(
             (item: PostItemProps) => item.access !== "ultimate"
@@ -93,6 +94,7 @@ export default function SessionProvider({
       if (result.access === "ultimate") {
         setCollections(currentUserCollections);
       }
+      // set user fav models
       const currentUserFavourites = result?.favourites?.map(
         (favourite: UserFavouriteItemProps) => {
           return favourite.model;
