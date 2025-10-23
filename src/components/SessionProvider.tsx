@@ -83,37 +83,37 @@ export default function SessionProvider({
         setFavourites(currentUserFavourites);
 
         // set user collections
-        // const currentUserCollections = result?.collections?.map(
-        //   (collection: UserCollectionItemProps) => collection.post_item
-        // );
+        const currentUserCollections = result?.collections?.map(
+          (collection: UserCollectionItemProps) => collection.post_item
+        );
 
-        let currentUserCollections;
+        // let currentUserCollections;
 
-        if (result?.access === "free") {
-          currentUserCollections = result?.collections
-            ?.filters(
-              (collection: UserCollectionItemProps) =>
-                collection?.post_item?.access === "free"
-            )
-            ?.map(
-              (collection: UserCollectionItemProps) => collection.post_item
-            );
-        }
-        if (result?.access === "premium") {
-          currentUserCollections = result?.collections
-            ?.filters(
-              (collection: UserCollectionItemProps) =>
-                collection?.post_item?.access !== "ultimate"
-            )
-            ?.map(
-              (collection: UserCollectionItemProps) => collection.post_item
-            );
-        }
-        if (result?.access === "ultimate") {
-          currentUserCollections = result?.collections?.map(
-            (collection: UserCollectionItemProps) => collection.post_item
-          );
-        }
+        // if (result?.access === "free") {
+        //   currentUserCollections = result?.collections
+        //     ?.filters(
+        //       (collection: UserCollectionItemProps) =>
+        //         collection?.post_item?.access === "free"
+        //     )
+        //     ?.map(
+        //       (collection: UserCollectionItemProps) => collection.post_item
+        //     );
+        // }
+        // if (result?.access === "premium") {
+        //   currentUserCollections = result?.collections
+        //     ?.filters(
+        //       (collection: UserCollectionItemProps) =>
+        //         collection?.post_item?.access !== "ultimate"
+        //     )
+        //     ?.map(
+        //       (collection: UserCollectionItemProps) => collection.post_item
+        //     );
+        // }
+        // if (result?.access === "ultimate") {
+        //   currentUserCollections = result?.collections?.map(
+        //     (collection: UserCollectionItemProps) => collection.post_item
+        //   );
+        // }
 
         setCollections(currentUserCollections);
       }
