@@ -1,32 +1,65 @@
 import React, { Suspense } from "react";
 import type { Metadata } from "next";
+import { getModelItemDetailsData } from "@/actions/actions";
 import Preloader from "@/components/Preloader";
 import Main from "./Main";
 import "./modelProfilePage.css";
 
-// TODO: need to update this part with Muse detials by ID, keywords includes tags
-export const metadata: Metadata = {
-  title: "FitMuse Profile - Alluring Fitness Muse Spotlight",
-  description:
-    "Step inside the world of a FitMuse muse. Discover captivating portfolios, seductive galleries, and premium fitness content that showcase beauty, strength, and allure in every detail.",
-  keywords: [
-    "FitMuse profile",
-    "fitness muse spotlight",
-    "alluring gym muse",
-    "seductive fitness model",
-    "irresistible fitness portfolio",
-    "exclusive fitness galleries",
-    "captivating workout muse",
-    "premium fitness content",
-    "provocative fitness inspiration",
-    "magnetic fitness allure",
-    "sensual fitness showcase",
-    "adult fitness muse",
-    "stunning fitness beauty",
-    "personal muse gallery",
-    "FitMuse star profile",
-  ],
-};
+// metadata
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  const model = await getModelItemDetailsData(id);
+
+  // Use avatar URL if available, otherwise fall back
+  const previewImage =
+    model?.avatar?.url || "https://www.fitmuse.club/fitmuse-preview.jpg";
+
+  return {
+    title: `FitMuse - ${model?.name} (${model?.role || "Fitness Muse"})`,
+    description:
+      model?.brief ||
+      `Discover ${model?.name}, one of FitMuse's captivating muses — where beauty meets strength.`,
+    keywords: model?.tags?.map((tag: { name: string }) => tag?.name) || [
+      "FitMuse",
+      "fitness muse",
+      "fitness model",
+      "workout inspiration",
+      "fitness beauty",
+    ],
+    openGraph: {
+      title: `FitMuse Muse - ${model?.name} | Beauty, Strength & Allure`,
+      description:
+        model?.brief ||
+        `Explore exclusive photos and galleries of ${model?.name} — FitMuse's global fitness inspiration.`,
+      url: `https://www.fitmuse.club/muse/${id}`,
+      siteName: "FitMuse",
+      images: [
+        {
+          url: previewImage,
+          width: 1200,
+          height: 630,
+          alt: `${model?.name} - FitMuse Muse`,
+        },
+      ],
+      locale: "en_US",
+      alternateLocale: ["ja_JP", "ko_KR", "vi_VN", "id_ID"],
+      type: "profile",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `FitMuse - ${model?.name} (${model?.role || "Muse"})`,
+      description:
+        model?.brief ||
+        `See exclusive galleries and videos of ${model?.name}, a stunning FitMuse muse.`,
+      images: [previewImage],
+    },
+    metadataBase: new URL("https://www.fitmuse.club"),
+  };
+}
 
 export default async function ModelProfilePage({
   params,

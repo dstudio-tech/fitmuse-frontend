@@ -22,59 +22,77 @@ import Footer from "@/sections/Footer";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "FitMuse - Where Beauty Meets Strength",
+  title: "FitMuse - Where Beauty Meets Strength | Premium Fitness & Allure",
   description:
-    "Step into a world where beauty, strength, and allure collide. Explore irresistible workout shorts, stunning portfolios, and exclusive galleries designed to inspire and captivate.",
+    "Discover FitMuse, the global hub where beauty meets strength. Explore irresistible workout shorts, captivating fitness muses, exclusive videos, and premium galleries that inspire confidence and sensuality. Available in English, 日本語, 한국어, Tiếng Việt, and Bahasa Indonesia.",
   keywords: [
+    // Core Brand & Concept
     "FitMuse",
     "fitness muses",
-    "workout shorts",
-    "fitness galleries",
+    "fitness models",
+    "workout inspiration",
+    "fit girls",
+    "fitness allure",
+    "beauty and strength",
     "premium fitness content",
-    "alluring fitness",
     "exclusive fitness videos",
-    "alluring gym muses",
-    "seductive fitness",
-    "sensual workout",
-    "sexy gym shorts",
-    "provocative fitness content",
-    "exclusive fitness galleries",
-    "premium fitness videos",
-    "irresistible workout shorts",
-    "intimate fitness allure",
-    "captivating fitness models",
-    "adult fitness entertainment",
-    "glamorous gym content",
-    "allure and strength",
+    "fitness photography",
+    // Descriptive & Emotional
+    "sexy workout",
+    "seductive gym muses",
+    "sensual fitness",
+    "alluring gym models",
+    "irresistible fitness allure",
+    "intimate workout style",
+    "captivating fitness videos",
+    "glamorous gym looks",
+    "elite fitness experience",
+    "strong and beautiful",
+    // Regional language keywords
+    "フィットネスモデル", // Japanese: fitness model
+    "ジム美女", // Japanese: gym beauty
+    "운동 미녀", // Korean: fitness beauty
+    "피트니스 여신", // Korean: fitness goddess
+    "cô gái thể hình quyến rũ", // Vietnamese: alluring fitness girl
+    "nữ thần phòng gym", // Vietnamese: gym goddess
+    "wanita fitnes cantik", // Indonesian: beautiful fitness woman
+    "model kebugaran", // Indonesian: fitness model
+    "video fitnes premium",
+    "galeri kebugaran eksklusif",
+    // Lifestyle & Discovery
+    "fitness lifestyle",
+    "premium fitness galleries",
+    "exclusive content platform",
+    "global fitness community",
+    "strength and allure",
+    "body confidence",
+    "female empowerment",
     "fitness passion",
-    "desire and discipline",
-    "magnetic fitness appeal",
-    "seductive portfolios",
-    "fitness connoisseur experience",
   ],
   openGraph: {
-    title: "FitMuse - Fitness Meets Allure",
+    title: "FitMuse - Global Fitness Allure | Explore, Inspire, Captivate",
     description:
-      "At FitMuse, we transform fitness into fascination. Unlock irresistible workout shorts, breathtaking galleries, and exclusive content designed to captivate and inspire.",
+      "Experience FitMuse, the world's most alluring fitness destination. Browse exclusive workout videos, glamorous fitness portfolios, and premium galleries celebrating strength, sensuality, and style. Available worldwide – English, 日本語, 한국어, Tiếng Việt, Bahasa Indonesia.",
     url: "https://www.fitmuse.club",
     siteName: "FitMuse",
     images: [
       {
-        url: "https://www.fitmuse.club/logo.png",
-        width: 600,
-        height: 600,
-        alt: "FitMuse - Fitness Meets Allure",
+        url: "https://www.fitmuse.club/fitmuse-preview.jpg",
+        width: 1200,
+        height: 630,
+        alt: "FitMuse - Global Fitness Allure and Premium Fitness Inspiration",
       },
     ],
     locale: "en_US",
+    alternateLocale: ["ja_JP", "ko_KR", "vi_VN", "id_ID"],
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "FitMuse - Where Beauty Meets Strength",
+    title: "FitMuse - Beauty, Strength & Global Fitness Allure",
     description:
-      "Watch irresistible workout shorts, explore stunning portfolios, and unlock exclusive galleries crafted to inspire and captivate.",
-    images: ["https://www.fitmuse.club/logo.png"],
+      "Watch exclusive fitness muses and captivating gym models. Explore premium workout videos, alluring galleries, and global fitness inspiration — FitMuse connects strength with sensuality.",
+    images: ["https://www.fitmuse.club/fitmuse-preview.jpg"],
   },
   icons: {
     icon: "/favicon.png",
