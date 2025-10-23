@@ -72,6 +72,7 @@ export default function SessionProvider({
       const result = await response.json();
 
       if (result) {
+        console.log(result);
         setUser(result);
         // set user fav models
         const currentUserFavourites = result?.favourites?.map(
