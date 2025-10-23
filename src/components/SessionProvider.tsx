@@ -71,17 +71,33 @@ export default function SessionProvider({
       );
       const result = await response.json();
       setUser(result);
-      const currentUserCollections = result?.collections?.map(
-        (collection: UserCollectionItemProps) => {
+      const currentUserCollections = result?.collections
+        ?.map((collection: UserCollectionItemProps) => {
           return collection.post_item;
-        }
-      );
+        })
+        .filters((item: PostItemProps) => item.access === result.access);
+      if (result.access === "free") {
+        setCollections(
+          currentUserCollections.filters(
+            (item: PostItemProps) => item.access === "free"
+          )
+        );
+      }
+      if (result.access == "premium") {
+        setCollections(
+          currentUserCollections.filters(
+            (item: PostItemProps) => item.access !== "ultimate"
+          )
+        );
+      }
+      if (result.access === "ultimate") {
+        setCollections(currentUserCollections);
+      }
       const currentUserFavourites = result?.favourites?.map(
         (favourite: UserFavouriteItemProps) => {
           return favourite.model;
         }
       );
-      setCollections(currentUserCollections);
       setFavourites(currentUserFavourites);
     } catch (error) {
       console.log(error);
