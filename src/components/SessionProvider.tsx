@@ -79,14 +79,14 @@ export default function SessionProvider({
       );
       if (result?.access === "free") {
         setCollections(
-          currentUserCollections.filters(
+          currentUserCollections?.filters(
             (item: PostItemProps) => item.access === "free"
           )
         );
       }
       if (result?.access === "premium") {
         setCollections(
-          currentUserCollections.filters(
+          currentUserCollections?.filters(
             (item: PostItemProps) => item.access !== "ultimate"
           )
         );
