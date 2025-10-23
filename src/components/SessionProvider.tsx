@@ -72,30 +72,29 @@ export default function SessionProvider({
       const result = await response.json();
       setUser(result);
       // set user collections
-      const currentUserCollections = result?.collections?.map(
-        (collection: UserCollectionItemProps) => {
-          return collection.post_item;
-        }
-      );
+      // const currentUserCollections = result?.collections?.map(
+      //   (collection: UserCollectionItemProps) => collection.post_item
+      // );
+
+      let currentUserCollections;
+
+      if (result?.access === "free") {
+        currentUserCollections = result?.collections
+          ?.map((collection: UserCollectionItemProps) => collection.post_item)
+          ?.filters((item: PostItemProps) => item.access === "free");
+      }
+      if (result?.access === "premium") {
+        currentUserCollections = result?.collections
+          ?.map((collection: UserCollectionItemProps) => collection.post_item)
+          ?.filters((item: PostItemProps) => item.access !== "ultimate");
+      }
+      if (result?.access === "ultimate") {
+        currentUserCollections = result?.collections?.map(
+          (collection: UserCollectionItemProps) => collection.post_item
+        );
+      }
 
       setCollections(currentUserCollections);
-      // if (result?.access === "free") {
-      //   setCollections(
-      //     currentUserCollections?.filters(
-      //       (item: PostItemProps) => item.access === "free"
-      //     )
-      //   );
-      // }
-      // if (result?.access === "premium") {
-      //   setCollections(
-      //     currentUserCollections?.filters(
-      //       (item: PostItemProps) => item.access !== "ultimate"
-      //     )
-      //   );
-      // }
-      // if (result?.access === "ultimate") {
-      //   setCollections(currentUserCollections);
-      // }
       // set user fav models
       const currentUserFavourites = result?.favourites?.map(
         (favourite: UserFavouriteItemProps) => {
