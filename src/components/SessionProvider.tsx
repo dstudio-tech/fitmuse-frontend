@@ -77,21 +77,21 @@ export default function SessionProvider({
           return collection.post_item;
         }
       );
-      if (result.access === "free") {
+      if (result?.access === "free") {
         setCollections(
           currentUserCollections.filters(
             (item: PostItemProps) => item.access === "free"
           )
         );
       }
-      if (result.access === "premium") {
+      if (result?.access === "premium") {
         setCollections(
           currentUserCollections.filters(
             (item: PostItemProps) => item.access !== "ultimate"
           )
         );
       }
-      if (result.access === "ultimate") {
+      if (result?.access === "ultimate") {
         setCollections(currentUserCollections);
       }
       // set user fav models
