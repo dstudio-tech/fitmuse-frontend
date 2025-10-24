@@ -23,6 +23,7 @@ export async function POST(req: NextRequest) {
   try {
     switch (event.type) {
       // create or update user subscription
+      /* ------------------------- checkout.session.completed ------------------------- */
       case "checkout.session.completed":
         const session = await stripe.checkout.sessions.retrieve(
           (event.data.object as Stripe.Checkout.Session).id,
@@ -230,7 +231,85 @@ export async function POST(req: NextRequest) {
           }
         }
         break;
+      // reset user on successful recharge
+      /* ------------------------- invoice.payment_succeeded ------------------------- */
+      case "invoice.payment_succeeded": {
+        const invoice = event.data.object as Stripe.Invoice;
+
+        // ✅ Safe cast for subscription
+        const subscriptionId =
+          typeof (invoice as any).subscription === "string"
+            ? (invoice as any).subscription
+            : null;
+
+        if (!subscriptionId) {
+          console.warn("No subscription id on invoice");
+          break;
+        }
+
+        let sub: Stripe.Subscription | null = null;
+        try {
+          sub = await stripe.subscriptions.retrieve(subscriptionId);
+        } catch (err) {
+          console.error("Failed to retrieve subscription:", err);
+          break;
+        }
+
+        // ✅ Safe access for current_period_end
+        const currentPeriodEnd = (sub as any).current_period_end;
+        if (!currentPeriodEnd) {
+          console.warn(
+            `No current_period_end found on subscription ${subscriptionId}`
+          );
+          break;
+        }
+
+        const newPeriodEnd = new Date(currentPeriodEnd * 1000);
+
+        try {
+          const saleResp = await fetch(
+            `${process.env.BACKEND_URL}/api/sales?populate=*&filters[stripeSubscriptionId][$eq]=${subscriptionId}`,
+            {
+              method: "GET",
+              headers: {
+                Authorization: `Bearer ${process.env.SUPER_USER_TOKEN}`,
+              },
+            }
+          );
+          const saleData = await saleResp.json();
+          const sale = saleData?.data?.[0];
+          if (!sale) {
+            console.warn(`No sale found for subscription ${subscriptionId}`);
+            break;
+          }
+
+          await fetch(
+            `${process.env.BACKEND_URL}/api/sales/${sale.documentId}`,
+            {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${process.env.SUPER_USER_TOKEN}`,
+              },
+              body: JSON.stringify({
+                data: {
+                  endDate: newPeriodEnd,
+                  isActive: true,
+                },
+              }),
+            }
+          );
+        } catch (err) {
+          console.error(
+            "Error updating sale on invoice.payment_succeeded:",
+            err
+          );
+        }
+        break;
+      }
+
       // cancel user subscription
+      /* ------------------------- customer.subscription.deleted ------------------------- */
       case "customer.subscription.deleted":
         const subscription = event.data.object as Stripe.Subscription;
         const cancelledUserId = subscription.metadata?.userId; // ✅ set earlier when creating/canceling subscription
