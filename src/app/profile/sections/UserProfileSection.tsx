@@ -41,10 +41,11 @@ export default function UserProfileSection({
   };
 
   useEffect(() => {
+    if (pageCount === 1) setCurrentPage(1);
     if (collections) {
       setItems(paginate(collections, currentPage, pageSize));
     }
-  }, [collections, currentPage]);
+  }, [collections, currentPage, pageSize]);
 
   useEffect(() => {
     if (!jwt) {
