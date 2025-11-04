@@ -231,42 +231,42 @@ export async function POST(req: NextRequest) {
           }
         }
         break;
+
       // reset user on successful recharge
-      /* ------------------------- invoice.payment_succeeded ------------------------- */
-      case "invoice.payment_succeeded": {
-        const invoice = event.data.object as Stripe.Invoice;
+      /* ----------------------- customer.subscription.updated ---------------------- */
+      case "customer.subscription.updated": {
+        const subscription = event.data.object as Stripe.Subscription;
+        const subscriptionId = subscription.id;
 
-        // ✅ Safe cast for subscription
-        const subscriptionId =
-          typeof (invoice as any).subscription === "string"
-            ? (invoice as any).subscription
-            : null;
+        // Prefer top-level current_period_end; fall back to the max item-level value
+        const topLevelCpe =
+          (subscription as any).current_period_end &&
+          Number((subscription as any).current_period_end);
 
-        if (!subscriptionId) {
-          console.warn("No subscription id on invoice");
-          break;
-        }
+        const itemsCpe = Array.isArray(subscription.items?.data)
+          ? Math.max(
+              0,
+              ...subscription.items.data.map((it: any) =>
+                typeof it?.current_period_end === "number"
+                  ? it.current_period_end
+                  : 0
+              )
+            )
+          : 0;
 
-        let sub: Stripe.Subscription | null = null;
-        try {
-          sub = await stripe.subscriptions.retrieve(subscriptionId);
-        } catch (err) {
-          console.error("Failed to retrieve subscription:", err);
-          break;
-        }
+        const currentPeriodEndSec = topLevelCpe || itemsCpe;
 
-        // ✅ Safe access for current_period_end
-        const currentPeriodEnd = (sub as any).current_period_end;
-        if (!currentPeriodEnd) {
+        if (!currentPeriodEndSec) {
           console.warn(
-            `No current_period_end found on subscription ${subscriptionId}`
+            `No current_period_end present for subscription ${subscriptionId}; cannot update endDate.`
           );
           break;
         }
 
-        const newPeriodEnd = new Date(currentPeriodEnd * 1000);
+        const newPeriodEnd = new Date(currentPeriodEndSec * 1000);
 
         try {
+          // Find sale by subscription id
           const saleResp = await fetch(
             `${process.env.BACKEND_URL}/api/sales?populate=*&filters[stripeSubscriptionId][$eq]=${subscriptionId}`,
             {
@@ -278,11 +278,13 @@ export async function POST(req: NextRequest) {
           );
           const saleData = await saleResp.json();
           const sale = saleData?.data?.[0];
+
           if (!sale) {
             console.warn(`No sale found for subscription ${subscriptionId}`);
             break;
           }
 
+          // Update endDate & status (ISO string safest for Strapi)
           await fetch(
             `${process.env.BACKEND_URL}/api/sales/${sale.documentId}`,
             {
@@ -293,18 +295,21 @@ export async function POST(req: NextRequest) {
               },
               body: JSON.stringify({
                 data: {
-                  endDate: newPeriodEnd,
+                  endDate: newPeriodEnd.toISOString(),
                   isActive: true,
                 },
               }),
             }
           );
+
+          // If you want monthly credit top-ups on renewal, add it here based on price.id.
         } catch (err) {
           console.error(
-            "Error updating sale on invoice.payment_succeeded:",
+            "Error updating sale on customer.subscription.updated:",
             err
           );
         }
+
         break;
       }
 
